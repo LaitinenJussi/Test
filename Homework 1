@@ -37,21 +37,12 @@ myGenWienerProcess<-function(T,deltat,a,b,R) {
   return(result)
 }
 
+output <-myGenWienerProcess(T=1,deltat=0.001,a=-0.05,b=0.04,R=3)
 
-myWienerProcess<-function(T,deltat,R)
-{#opening brace of the Rfunction
-  t<-seq(from=0,to=T,by=deltat)
-  result<-NULL 
-  for(r in 1:R)
-  {
-    z<-cumsum(c(0,sqrt(deltat)*rnorm(n=length(t)-1))) 
-    temp<-data.frame(time=t,value=z,rep=paste(r)) 
-    result<-rbind(result,temp) 
-  } 
-  return(result)
-  #return the Rvariable 'result' as the value of the Rfunction
-}
 
+
+
+Generalized Wiener Process
 T<-1 #assign 1 to the Rvariable 'T'
 deltat<-0.001 #assign 0.001 to the Rvariable 'deltat'
 t<-seq(from=0,to=T,by=deltat) #create a sequence 0,0.001,...,1 
