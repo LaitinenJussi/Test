@@ -9,12 +9,33 @@
 #...
 #Member whose quiz variant is used for coding:
 #...
+
+
 #Exercise 2 
 #Combine/modify the Rcode from Exercises 7 and 12 from Lab1 to design an Rfunction which will 
 #generate paths of the Generalized Wiener Process (paths should be tagged with path index,
 #drift coefficient and diffusion coefficient).
-#Set Random SEED TO 2141
 
+#Set Random SEED TO 2141
+#Use your Rfunction to generate 6 paths of the Generalized Wiener Process on [0,2.3] (use time-step Δt=0.01) with parameters a=−0.7, b=0.1. 
+#Using Rfunction(s) of the Rpackage ggplot2, plot the paths accordingly.
+#SET RANDOM SEED TO 2141. Repeat for a=−0.7, b=0 (with everything else the same).
+#SET RANDOM SEED TO 2141. Repeat for a=0, b=1 (with everything else the same).
+
+
+myGenWienerProcess<-function(T,deltat,a,b,R) {
+  t<-seq(from=0,to=T,by=deltat) 
+  result<-NULL
+  
+  for(r in 1:R) {
+  x<-cumsum(c(0,a*deltat+b*sqrt(deltat)*rnorm(n=length(t)-1)))
+  
+  temp<-data.frame(time=t,value=x,rep=paste(r),          ##obs! change paste(1) to paste(r)
+                   drift=paste(a),diffusion=paste(b))
+  result<-rbind(result,temp)
+  }
+  return(result)
+}
 
 
 myWienerProcess<-function(T,deltat,R)
