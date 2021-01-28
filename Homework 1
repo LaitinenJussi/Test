@@ -26,6 +26,7 @@
 RNGkind(sample.kind = "Rejection")
 set.seed(2141)
 
+##################################################
 myGenWienerProcess<-function(T,deltat,a,b,R) {
   t<-seq(from=0,to=T,by=deltat) 
   result<-NULL
