@@ -23,6 +23,7 @@
 #SET RANDOM SEED TO 2141. Repeat for a=−0.7, b=0 (with everything else the same).
 #SET RANDOM SEED TO 2141. Repeat for a=0, b=1 (with everything else the same).
 
+RNGkind(sample.kind = "Rejection")
 set.seed(2141)
 
 myGenWienerProcess<-function(T,deltat,a,b,R) {
