@@ -28,7 +28,7 @@ myGenWienerProcess<-function(T,deltat,a,b,R) {
   result<-NULL
   
   for(r in 1:R) {
-  x<-cumsum(c(0,a*deltat+b*sqrt(deltat)*rnorm(n=length(t)-1)))
+  x<-cumsum(c(0,a*deltat+b*sqrt(deltat)*rnorm(n=length(t)-1, mean =0,sd=2.3)))
   
   temp<-data.frame(time=t,value=x,rep=paste(r),          ##obs! change paste(1) to paste(r)
                    drift=paste(a),diffusion=paste(b))
