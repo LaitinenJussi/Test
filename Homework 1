@@ -39,6 +39,13 @@ myGenWienerProcess<-function(T,deltat,a,b,R) {
 
 output <-myGenWienerProcess(T=1,deltat=0.01,a=-0.7,b=0.1, R=6)
 
+set.seed(2141)
+
+output2 <- myGenWienerProcess(T=1, deltat=0.01, a=-0.07,  b=0, R=6)
+
+set.seed(2141)
+
+output3 <- myGenWienerProcess(T=1, deltat=0.01, a=0, b=1, R=6)
 
 
 
