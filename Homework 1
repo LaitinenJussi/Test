@@ -49,7 +49,7 @@ ggplot(data=output2,aes(x=time,y=value,col=rep))+geom_line()
 set.seed(2141)
 
 output3 <- myGenWienerProcess(T=1, deltat=0.01, a=0, b=1, R=6)
-ggplot(data=output3,aes(x=time,y=value,col=rep))+geom_line()
+ggplot(data=output3,aes(x=time,y=value,col=rep))+geom_line()+ggtitle("a=0, b=1")
 
 
 
