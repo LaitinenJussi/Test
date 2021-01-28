@@ -1,14 +1,14 @@
 #Rscript for HW1
 
 
-#Group nr: ...
+#Group nr: 5
 #Members:
-#...
-#...
-#...
-#...
+# Oskar Lindman
+# Jussi Laitinen
+# Patrik Sunila
+# Alina-Emelie Andersson
 #Member whose quiz variant is used for coding:
-#...
+# Alina-Emelie Andersson
 
 
 #Exercise 2 
@@ -27,33 +27,35 @@ RNGkind(sample.kind = "Rejection")
 set.seed(2141)
 
 ##################################################
-myGenWienerProcess<-function(T,deltat,a,b,R) {
+myGWP<-function(T,deltat,a,b,R) {
   t<-seq(from=0,to=T,by=deltat) 
   result<-NULL
-  
   for(r in 1:R) {
-  x<-cumsum(c(0,a*deltat+b*sqrt(deltat)*rnorm(n=length(t)-1, mean =0,sd=2.3)))
-  
-  temp<-data.frame(time=t,value=x,rep=paste(r),drift=paste(a),diffusion=paste(b))
+  x<-cumsum(c(0,a*deltat+b*sqrt(deltat)
+            *rnorm(n=length(t)-1, mean =0,sd=2.3)))
+  temp<-data.frame(time=t,value=x,rep=paste(r),
+                 drift=paste(a),diffusion=paste(b))
   result<-rbind(result,temp)
   }
   return(result)
 }
 
-output <-myGenWienerProcess(T=1,deltat=0.01,a=-0.7,b=0.1, R=6)
-ggplot(data=output,aes(x=time,y=value,col=rep))+geom_line()+ggtitle("Expected drift rate = -0.7 Variance rate = 0.1")
-
+output <-myGWP(T=1,deltat=0.01,a=-0.7,b=0.1, R=6)
+ggplot(data=output,aes(x=time,y=value,col=rep))
+        +geom_line()
+        +ggtitle("Expected drift rate = -0.7,
+                  Variance rate = 0.1")
+        
+set.seed(2141)
+output2 <- myGWP(T=1,deltat=0.01,a=-0.07,b=0,R=6)
+ggplot(data=output2,aes(x=time,y=value,col=rep))
+      +geom_line()
+      +ggtitle("Expected drift rate = -0.07,
+                Variance rate = 0")
 
 set.seed(2141)
-
-output2 <- myGenWienerProcess(T=1, deltat=0.01, a=-0.07,  b=0, R=6)
-ggplot(data=output2,aes(x=time,y=value,col=rep))+geom_line()+ggtitle("Expected drift rate = -0.07 Variance rate = 0")
-
-
-set.seed(2141)
-
-output3 <- myGenWienerProcess(T=1, deltat=0.01, a=0, b=1, R=6)
-ggplot(data=output3,aes(x=time,y=value,col=rep))+geom_line()+ggtitle("Expected drift rate = 0, Variance rate = 1")
-
-
-
+output3 <- myGWP(T=1, deltat=0.01, a=0, b=1, R=6)
+ggplot(data=output3,aes(x=time,y=value,col=rep))
+       +geom_line()
+       +ggtitle("Expected drift rate = 0, 
+                  Variance rate = 1")
