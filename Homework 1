@@ -21,7 +21,7 @@
 #Using Rfunction(s) of the Rpackage ggplot2, plot the paths accordingly.
 #SET RANDOM SEED TO 2141. Repeat for a=−0.7, b=0 (with everything else the same).
 #SET RANDOM SEED TO 2141. Repeat for a=0, b=1 (with everything else the same).
-
+set.seed(2141)
 
 myGenWienerProcess<-function(T,deltat,a,b,R) {
   t<-seq(from=0,to=T,by=deltat) 
