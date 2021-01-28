@@ -1,3 +1,21 @@
+#Rscript for HW1
+
+#Group nr: ...
+#Members:
+#...
+#...
+#...
+#...
+#Member whose quiz variant is used for coding:
+#...
+#Exercise 2 
+#Combine/modify the Rcode from Exercises 7 and 12 from Lab1 to design an Rfunction which will 
+#generate paths of the Generalized Wiener Process (paths should be tagged with path index,
+#drift coefficient and diffusion coefficient).
+#Set Random SEED TO 2141
+
+
+
 myWienerProcess<-function(T,deltat,R)
 {#opening brace of the Rfunction
   t<-seq(from=0,to=T,by=deltat)
