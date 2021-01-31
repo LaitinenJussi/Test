@@ -59,3 +59,81 @@ ggplot(data=output3,aes(x=time,y=value,col=rep))
        +geom_line()
        +ggtitle("Expected drift rate = 0, 
                   Variance rate = 1")
+
+
+#Jussis Function and example
+alphabeta <- function(x,y)
+{
+  #First we fit a linear regression model 
+  myfit <-lm(y~x, na.action='na.omit')
+  #We assign a variable for the coefficients of 
+  #The linear regression model 
+  s<-summary(myfit)
+  #Assign labels to a vector  
+  measure <- c('aplha', 'beta')
+  #Assign alpha and beta to a vector
+  value <- c(s$coefficients[1,1], s$coefficients[2,1])
+  #Combine vectors so they can be returned as one 
+  values <- data.frame(measure, value)
+  return(values)
+}
+#Example from quiz0 dataframe
+findata<-read.table(header=TRUE,text='
+                    date adjclose ticker tday
+                    01-12-2020 68.76 KNEBV 1
+                    02-12-2020 68.52 KNEBV 2
+                    03-12-2020 68.38 KNEBV 3
+                    04-12-2020 66.84 KNEBV 4
+                    07-12-2020 67.5 KNEBV 5
+                    08-12-2020 67.76 KNEBV 6
+                    09-12-2020 67.4 KNEBV 7
+                    10-12-2020 67.54 KNEBV 8
+                    11-12-2020 67.64 KNEBV 9
+                    14-12-2020 67.22 KNEBV 10
+                    15-12-2020 67.66 KNEBV 11
+                    16-12-2020 66.22 KNEBV 12
+                    17-12-2020 66.36 KNEBV 13
+                    18-12-2020 66.96 KNEBV 14
+                    21-12-2020 66.54 KNEBV 15
+                    22-12-2020 66.6 KNEBV 16
+                    23-12-2020 65.7 KNEBV 17
+                    28-12-2020 67.3 KNEBV 18
+                    29-12-2020 67.38 KNEBV 19
+                    30-12-2020 66.46 KNEBV 20
+                    01-12-2020 4589.66 OMXH 1
+                    02-12-2020 4571.97 OMXH 2
+                    03-12-2020 4557.42 OMXH 3
+                    04-12-2020 4547.17 OMXH 4
+                    07-12-2020 4571.12 OMXH 5
+                    08-12-2020 4607.69 OMXH 6
+                    09-12-2020 4594.49 OMXH 7
+                    10-12-2020 4585.32 OMXH 8
+                    11-12-2020 4547.95 OMXH 9
+                    14-12-2020 4553.37 OMXH 10
+                    15-12-2020 4594.67 OMXH 11
+                    16-12-2020 4603.04 OMXH 12
+                    17-12-2020 4578.95 OMXH 13
+                    18-12-2020 4575.42 OMXH 14
+                    21-12-2020 4468.94 OMXH 15
+                    22-12-2020 4500.27 OMXH 16
+                    23-12-2020 4530.21 OMXH 17
+                    28-12-2020 4584.01 OMXH 18
+                    29-12-2020 4622.84 OMXH 19
+                    30-12-2020 4586.15 OMXH 20
+                    ')
+library('data.table')
+dt<-data.table(findata)
+dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
+      miP=min(adjclose,na.rm=TRUE)),by=.(ticker)]
+dt[,`:=`(ret=c(NA,diff(log(adjclose)))),by=.(ticker)]
+dt
+dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
+      miP=min(adjclose,na.rm=TRUE),
+      xbarR=mean(ret,na.rm=TRUE),sR=sd(ret,na.rm=TRUE),
+      miR=min(ret,na.rm=TRUE)),by=.(ticker)]
+
+#Use function to calculate alpha and beta
+#Between Kone and the OMX-index
+
+alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
+
