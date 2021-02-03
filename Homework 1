@@ -61,8 +61,10 @@ ggplot(data=output3,aes(x=time,y=value,col=rep))
                   Variance rate = 1")
 
 ## EXCERCISE 3 PART 1
+RNGkind(sample.kind ="Rejection")
+set.seed(43020)
 
-## Poisson process
+#Poission process
 vect<- cbind(rexp(16, rate = 5.9))
 vect<- signif(vect, 2)  #rounds to two decimals
 vect
