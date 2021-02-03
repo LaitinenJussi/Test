@@ -180,3 +180,21 @@ myTheoreticalMeanVar<-function(a, b, T) {
 #Quiz1, Q1, {X_t}, t=0.1
 myTheoreticalMeanVar(1.3, 1.5, 0.1)
 
+
+#######################
+Oskars example
+
+DiscTimeProcess <- function(T,mu,sigma,S,deltat,R){
+  t<-seq(from=0,to=T,by=deltat)
+  result <- NULL
+  for(r in 1:R){
+    valueS <- cumsum(c(0,mu*S*deltat+sigma*S*rnorm(length(t)-1,0,1)))
+    temp <- data.frame(t,valueS,rep=paste(r))
+    result <- rbind(result,temp)}
+  return(result)
+}
+library(ggplot2)
+output<-DiscTimeProcess(1,0.01,0.05,10,1/252,1)
+gg<-ggplot(data=output,aes(x=t,y=valueS,col=rep))+geom_line()
+gg<-gg+theme(legend.position='none')
+print(gg)
