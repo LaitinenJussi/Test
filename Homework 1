@@ -60,6 +60,20 @@ ggplot(data=output3,aes(x=time,y=value,col=rep))
        +ggtitle("Expected drift rate = 0, 
                   Variance rate = 1")
 
+## EXCERCISE 3 PART 1
+
+## Poisson process
+vect<- cbind(rexp(16, rate = 5.9))
+vect<- signif(vect, 2)  #rounds to two decimals
+vect
+
+cumvect<- cbind(cumsum(vect))
+cumvect
+
+mydf<- (data.frame(inter_arrival = vect, arrival_times =cumvect))
+mydf
+
+
 
 #Jussis Function and example
 alphabeta <- function(x,y)
