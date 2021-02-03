@@ -137,3 +137,18 @@ dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
 
 alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
 
+
+#################################
+#Patriks example
+
+#creating the data, two vectors which both consists of 1000 random numerical elements.
+set.seed(2021)
+x1 <- rnorm(1000)
+y1 <- x1 + rnorm(1000)
+#plotting the data and modify title and axis labels 
+plot(x1, y1, main = "My Plot", xlab ="X-values", ylab="Y-values")
+#combining two functions 
+plot(density(x1))
+#adding another density and changing the colour 
+lines(density(y1), col = "red")
+
