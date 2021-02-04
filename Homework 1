@@ -60,18 +60,14 @@ ggplot(data=output3,aes(x=time,y=value,col=rep))
        +ggtitle("Expected drift rate = 0, 
                   Variance rate = 1")
 
-## EXCERCISE 3 PART 1
+## EXCERCISE 3 PART 1 behövs inte i inlämningen
 RNGkind(sample.kind ="Rejection")
 set.seed(43020)
 
-#Poission process
+#Poission process 
 vect<- cbind(rexp(16, rate = 5.9))
 vect<- signif(vect, 2)  #rounds to two decimals
-vect
-
 cumvect<- cbind(cumsum(vect))
-cumvect
-
 mydf<- (data.frame(inter_arrival = vect, arrival_times =cumvect))
 mydf
 
@@ -168,8 +164,8 @@ plot(density(x1))
 #adding another density and changing the colour 
 lines(density(y1), col = "red")
 
-## Alinas function (can someone test this, not sure if I got the theory part correct)
-#Theoretical Mean & Var for the GWP
+#######################
+#Alinas function 1
 myTheoreticalMeanVar<-function(a, b, T) {
   mean<- a*T    #estimate theoretical mean
   var<- (b^2)*T  #estimate theoretical var
@@ -179,6 +175,16 @@ myTheoreticalMeanVar<-function(a, b, T) {
 
 #Quiz1, Q1, {X_t}, t=0.1
 myTheoreticalMeanVar(1.3, 1.5, 0.1)
+
+#Alinas function 2
+#For a sequence of interarrival times return arrival times
+myArrivaltimes <-function(vect) {
+  c(cumsum(vect))
+}
+
+vect<- c(rexp(10, rate = 5.9))
+vect<- signif(vect, 2)
+myArrivaltimes(vect)
 
 
 #######################
