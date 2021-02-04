@@ -225,10 +225,10 @@ myTheoreticalMeanVar(1.3, 1.5, 0.1)
 #Alinas function 2
 #For a sequence of interarrival times return arrival times
 myArrivaltimes <-function(vect) {
-  c(cumsum(vect))
+  #return the sequence of cumulative sums of interarrival times
+  c(cumsum(vect)) 
 }
-
-vect<- c(rexp(10, rate = 5.9))
+vect<- c(rexp(16, rate = 5.9))
 vect<- signif(vect, 2)
 myArrivaltimes(vect)
 
