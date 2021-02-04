@@ -1,4 +1,56 @@
+#This space is reserved for the teacher:
+#Ex1: NA
+#Ex2 (2pts): 
+#Ex3 (2pts): 
+#Feedback:
+#
+#
+#
+#################################################
 #Rscript for HW1
+
+#Annotations guidelines: TAS BORT SENARE
+
+#For a user-declared function:       
+#before the declaration, use a box with a maximum 10 lines and a maximum 50 columns,               
+#for example, this is a 10x50 box
+#################################################
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#################################################
+
+#For a coherent chunk of code 
+#(related to similar tasks, approx. 10-20 lines of code)
+#that is not a function: same as above 
+
+#Do not use in-line annotations
+#Don't forget to clear workspace and take care when setting the random seed
+
+#################################################No code submission for Exercise 1
+
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#use two comment boxes: one for the function and one for the three calls to the function
+
+#################################################Code for Exercise 3, Part II only
+#################################################Code for Exercise 3, Part II only
+#################################################Code for Exercise 3, Part II only
+#################################################Code for Exercise 3, Part II only
+#################################################Code for Exercise 3, Part II only
+#################################################Code for Exercise 3, Part II only
+#use four comment boxes: one per each function&call
+
 
 
 #Group nr: 5
@@ -12,10 +64,6 @@
 
 
 #Exercise 2 
-#Combine/modify the Rcode from Exercises 7 and 12 from Lab1 to design an Rfunction which will 
-#generate paths of the Generalized Wiener Process (paths should be tagged with path index,
-#drift coefficient and diffusion coefficient).
-
 
 #Set Random SEED TO 2141
 #1) Use your Rfunction to generate 6 paths of the Generalized Wiener Process on [0,2.3] (use time-step Δt=0.01) with parameters a=−0.7, b=0.1. 
