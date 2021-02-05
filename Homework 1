@@ -202,16 +202,20 @@ alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
 
 
 #################################
-#Patriks example
+#Patriks function
 
+#Calculating the geometrical mean
 geo.mean <-function(x) {
   prod.x <-prod(x)
+  #n represents the number of observations
   n <- length(x)
+  #dividing the function by the number of observations
   gm <-prod.x^ (1/n)
   return(gm)
 }
-#geometrical mean of a stock price during a week
-geo.mean(c(2.5,2.46,2.53,2.57,2.64))
+#geometrical mean of a stock price during a week Mon-Fri
+#c represents a vector with values
+geo.mean(c(2.5,2.36,2.63,2.69,2.74))
 
 #######################
 #Alinas function 1
