@@ -41,18 +41,20 @@ myGWP<-function(T,deltat,a,b,R) {
 
 ##################################################
 RNGkind(sample.kind = "Rejection")
-set.seed(2141)
 
+set.seed(2141)
 output <-myGWP(T=2.3,deltat=0.01,a=-0.7,b=0.1, R=6)
 gg<-ggplot(data=output,aes(x=time,y=value,col=rep))
 gg<-gg+geom_line()
 gg+ggtitle("Drift=-0.7, Diffusion=0.1")
-        
+
+set.seed(2141)        
 output2 <- myGWP(T=2.3,deltat=0.01,a=-0.7,b=0,R=6)
 gg<-ggplot(data=output2,aes(x=time,y=value,col=rep))
 gg<-gg+geom_line()
 gg+ggtitle("Drift=-0.7, Diffusion=0")
 
+set.seed(2141)
 output3 <- myGWP(T=2.3, deltat=0.01, a=0, b=1, R=6)
 gg<-ggplot(data=output3,aes(x=time,y=value,col=rep))
 gg<-gg+geom_line()
@@ -66,23 +68,29 @@ gg+ggtitle("Drift=0, Diffusion=1")
 
 #################################################
 #Jussi's function & example
+#
+#A function to assign the alpha and beta.
+#First, we fit a linear regression model and then 
+#the variables for the coefficients of the linear
+#regression model are assigned.  
+#Then we set the labels to the vector (measure) 
+#and assign alpha and beta to a vector (value).
+#The vectors are combined with data.frame, so that
+#they can be returned as one.
+#Example is from quiz0 using a reduced findata
+#The function is used to calculate alpha and beta 
+#of the linear regression Kone and the OMX-index
+#################################################
 
 alphabeta <- function(x,y) {
-  #First we fit a linear regression model 
   myfit <-lm(y~x, na.action='na.omit')
-  #We assign a variable for the coefficients of 
-  #The linear regression model 
   s<-summary(myfit)
-  #Assign labels to a vector  
-  measure <- c('aplha', 'beta')
-  #Assign alpha and beta to a vector
+  measure <- c('alpha', 'beta')
   value <- c(s$coefficients[1,1], s$coefficients[2,1])
-  #Combine vectors so they can be returned as one 
   values <- data.frame(measure, value)
   return(values)
 }
 
-#Example from quiz0 dataframe
 findata<-read.table(header=TRUE,text='
                     date adjclose ticker tday
                     01-12-2020 68.76 KNEBV 1
@@ -101,29 +109,27 @@ dt<-data.table(findata)
 dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
       miP=min(adjclose,na.rm=TRUE)),by=.(ticker)]
 dt[,`:=`(ret=c(NA,diff(log(adjclose)))),by=.(ticker)]
-dt
 dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
       miP=min(adjclose,na.rm=TRUE),
       xbarR=mean(ret,na.rm=TRUE),sR=sd(ret,na.rm=TRUE),
       miR=min(ret,na.rm=TRUE)),by=.(ticker)]
 dtreshaped<-dcast(data=dt,tday~ticker,value.var='ret')
-dtreshaped
-
-#Use function to calculate alpha and beta
-#Between Kone and the OMX-index
 
 alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
+
 #################################################
+
+
 
 #################################################
 #Patrik's function & example
-#############################
-#Calculating the geometrical mean
+#
+#A function to estimate the geometrical mean
 #n represents the number of observations
 #dividing the function by the number of observations
 #Example with a share price during a trading week
 #here c represents a vector with share prices
-#############################
+#################################################
 
 geo.mean <-function(x) {
   prod.x <-prod(x)
@@ -131,10 +137,15 @@ geo.mean <-function(x) {
   gm <-prod.x^ (1/n)
   return(gm)
 }
+
 geo.mean(c(2.5,2.36,2.63,2.69,2.74))
 
-#Alina's function & example
 #################################################
+
+
+#################################################
+#Alina's function & example
+#
 #Return the theoretical mean and variance of the
 #Generalized Wiener Process, with drift a and
 #diffusion b and the time horizon T.
@@ -157,8 +168,10 @@ myTheoreticalMeanVar(a=1.3, b=1.5, T=0.1)
 #################################################
 
 
-#Oskars example
+
 ##################################################
+#Oskars function & example
+#
 #Give the arguments for the function(no values yet)
 #Generates r paths from 0 to T (T=1 in our case) 
 #for the discrete-time model
@@ -178,9 +191,11 @@ DiscreteTimeProcess <- function(T,mu,sigma,S,deltat,R){
     result <- rbind(result,temp)}
   return(result)
 }
+
 library(ggplot2)
 output<-DiscreteTimeProcess(1,0.01,0.05,10,1/252,1)
 gg<-ggplot(data=output,aes(x=time,y=valueS,col=rep))+geom_line()
 gg<-gg+theme(legend.position='none')
 print(gg)
+
 ##################################################
