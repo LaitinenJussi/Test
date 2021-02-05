@@ -150,23 +150,29 @@ myTheoreticalMeanVar<-function(a, b, T) {
 myTheoreticalMeanVar(a=1.3, b=1.5, T=0.1)
 #################################################
 
+#Oskars example
+##################################################
+#Give the arguments for the function(no values yet)
+#Generates r paths from 0 to T (T=1 in our case) 
+#for the discrete-time model
+#Write the formula and store it in valueS
+#Use data.frame to create a temporary data frame
+#Add the temporary data frame to the rvariable 
+#"result" that has NULL value
+#Assign values to the arguments and plot.
+##################################################
 
-#################################################
-#Oskar's function & example
-
-#Define the function for the discrete-time model
 DiscreteTimeProcess <- function(T,mu,sigma,S,deltat,R){
-  t<-seq(from=0,to=T,by=deltat)
+  t<-seq(from=0,to=T,by=deltat) 
   result <- NULL
   for(r in 1:R){
-    valueS <- cumsum(c(0,mu*S*deltat+sigma*S*rnorm(length(t)-1,0,1)))
-    temp <- data.frame(t,valueS,rep=paste(r))
+    valueS <- cumsum(c(S,mu*S*deltat+sigma*S*rnorm(length(t)-1,0,1)))
+    temp <- data.frame(time=t,valueS,rep=paste(r))
     result <- rbind(result,temp)}
   return(result)
 }
-#Example
+library(ggplot2)
 output<-DiscreteTimeProcess(1,0.01,0.05,10,1/252,1)
-gg<-ggplot(data=output,aes(x=t,y=valueS,col=rep))+geom_line()
+gg<-ggplot(data=output,aes(x=time,y=valueS,col=rep))+geom_line()
 gg<-gg+theme(legend.position='none')
 print(gg)
-#################################################
