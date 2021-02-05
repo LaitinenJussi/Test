@@ -191,6 +191,9 @@ dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
       miP=min(adjclose,na.rm=TRUE),
       xbarR=mean(ret,na.rm=TRUE),sR=sd(ret,na.rm=TRUE),
       miR=min(ret,na.rm=TRUE)),by=.(ticker)]
+dtreshaped<-dcast(data=dt,tday~ticker,value.var='ret')
+dtreshaped
+
 
 #Use function to calculate alpha and beta
 #Between Kone and the OMX-index
