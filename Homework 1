@@ -7,51 +7,7 @@
 #
 #
 #################################################
-#Rscript for HW1
-
-#Annotations guidelines: TAS BORT SENARE
-
-#For a user-declared function:       
-#before the declaration, use a box with a maximum 10 lines and a maximum 50 columns,               
-#for example, this is a 10x50 box
-#################################################
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#################################################
-
-#For a coherent chunk of code 
-#(related to similar tasks, approx. 10-20 lines of code)
-#that is not a function: same as above 
-
-#Do not use in-line annotations
-#Don't forget to clear workspace and take care when setting the random seed
-
-#################################################No code submission for Exercise 1
-
-#################################################Code for Exercise 2
-#################################################Code for Exercise 2
-#################################################Code for Exercise 2
-#################################################Code for Exercise 2
-#################################################Code for Exercise 2
-#use two comment boxes: one for the function and one for the three calls to the function
-
-#################################################Code for Exercise 3, Part II only
-#################################################Code for Exercise 3, Part II only
-#################################################Code for Exercise 3, Part II only
-#################################################Code for Exercise 3, Part II only
-#################################################Code for Exercise 3, Part II only
-#################################################Code for Exercise 3, Part II only
-#use four comment boxes: one per each function&call
-
-
+#Rscript for Homework 1
 
 #Group nr: 5
 #Members:
@@ -62,17 +18,11 @@
 #Member whose quiz variant is used for coding:
 # Alina-Emelie Andersson
 
+#################################################
 
-#Exercise 2 
 
-#Set Random SEED TO 2141
-#1) Use your Rfunction to generate 6 paths of the Generalized Wiener Process on [0,2.3] (use time-step Δt=0.01) with parameters a=−0.7, b=0.1. 
-#Using Rfunction(s) of the Rpackage ggplot2, plot the paths accordingly.
-#SET RANDOM SEED TO 2141. Repeat for a=−0.7, b=0 (with everything else the same).
-#SET RANDOM SEED TO 2141. Repeat for a=0, b=1 (with everything else the same).
+#Code for Question 2 
 
-RNGkind(sample.kind = "Rejection")
-set.seed(2141)
 
 ##################################################
 myGWP<-function(T,deltat,a,b,R) {
@@ -87,43 +37,35 @@ myGWP<-function(T,deltat,a,b,R) {
   }
   return(result)
 }
+##################################################
+RNGkind(sample.kind = "Rejection")
+set.seed(2141)
 
 output <-myGWP(T=2.3,deltat=0.01,a=-0.7,b=0.1, R=6)
-ggplot(data=output,aes(x=time,y=value,col=rep))
-        +geom_line()
-        +ggtitle("Expected drift rate = -0.7,
-                  Variance rate = 0.1")
+gg<-ggplot(data=output,aes(x=time,y=value,col=rep))
+gg<-gg +geom_line()
+gg+ggtitle("Drift=-0.7, Diffusion=0.1")
         
-set.seed(2141)
-output2 <- myGWP(T=2.3,deltat=0.01,a=-0.07,b=0,R=6)
-ggplot(data=output2,aes(x=time,y=value,col=rep))
-      +geom_line()
-      +ggtitle("Expected drift rate = -0.07,
-                Variance rate = 0")
+output2 <- myGWP(T=2.3,deltat=0.01,a=-0.7,b=0,R=6)
+gg<-ggplot(data=output2,aes(x=time,y=value,col=rep))
+gg<-gg+geom_line()
+gg+ggtitle("Drift=-0.7, Diffusion=0")
 
-set.seed(2141)
 output3 <- myGWP(T=2.3, deltat=0.01, a=0, b=1, R=6)
 ggplot(data=output3,aes(x=time,y=value,col=rep))
-       +geom_line()
-       +ggtitle("Expected drift rate = 0, 
-                  Variance rate = 1")
+gg<-gg+geom_line()
+gg+ggtitle("Drift=0, Diffusion=1")
 
-## EXCERCISE 3 PART 1 behövs inte i inlämningen
-RNGkind(sample.kind ="Rejection")
-set.seed(43020)
-
-#Poission process 
-vect<- cbind(rexp(16, rate = 5.9))
-vect<- signif(vect, 2)  #rounds to two decimals
-cumvect<- cbind(cumsum(vect))
-mydf<- (data.frame(inter_arrival = vect, arrival_times =cumvect))
-mydf
+#################################################
 
 
+#Code for Question 3 Part II
 
-#Jussis Function and example
-alphabeta <- function(x,y)
-{
+
+#################################################
+#Jussi's function & example
+
+alphabeta <- function(x,y) {
   #First we fit a linear regression model 
   myfit <-lm(y~x, na.action='na.omit')
   #We assign a variable for the coefficients of 
@@ -137,6 +79,7 @@ alphabeta <- function(x,y)
   values <- data.frame(measure, value)
   return(values)
 }
+
 #Example from quiz0 dataframe
 findata<-read.table(header=TRUE,text='
                     date adjclose ticker tday
@@ -145,41 +88,11 @@ findata<-read.table(header=TRUE,text='
                     03-12-2020 68.38 KNEBV 3
                     04-12-2020 66.84 KNEBV 4
                     07-12-2020 67.5 KNEBV 5
-                    08-12-2020 67.76 KNEBV 6
-                    09-12-2020 67.4 KNEBV 7
-                    10-12-2020 67.54 KNEBV 8
-                    11-12-2020 67.64 KNEBV 9
-                    14-12-2020 67.22 KNEBV 10
-                    15-12-2020 67.66 KNEBV 11
-                    16-12-2020 66.22 KNEBV 12
-                    17-12-2020 66.36 KNEBV 13
-                    18-12-2020 66.96 KNEBV 14
-                    21-12-2020 66.54 KNEBV 15
-                    22-12-2020 66.6 KNEBV 16
-                    23-12-2020 65.7 KNEBV 17
-                    28-12-2020 67.3 KNEBV 18
-                    29-12-2020 67.38 KNEBV 19
-                    30-12-2020 66.46 KNEBV 20
                     01-12-2020 4589.66 OMXH 1
                     02-12-2020 4571.97 OMXH 2
                     03-12-2020 4557.42 OMXH 3
                     04-12-2020 4547.17 OMXH 4
                     07-12-2020 4571.12 OMXH 5
-                    08-12-2020 4607.69 OMXH 6
-                    09-12-2020 4594.49 OMXH 7
-                    10-12-2020 4585.32 OMXH 8
-                    11-12-2020 4547.95 OMXH 9
-                    14-12-2020 4553.37 OMXH 10
-                    15-12-2020 4594.67 OMXH 11
-                    16-12-2020 4603.04 OMXH 12
-                    17-12-2020 4578.95 OMXH 13
-                    18-12-2020 4575.42 OMXH 14
-                    21-12-2020 4468.94 OMXH 15
-                    22-12-2020 4500.27 OMXH 16
-                    23-12-2020 4530.21 OMXH 17
-                    28-12-2020 4584.01 OMXH 18
-                    29-12-2020 4622.84 OMXH 19
-                    30-12-2020 4586.15 OMXH 20
                     ')
 library('data.table')
 dt<-data.table(findata)
@@ -194,15 +107,14 @@ dt[,.(xbarP=mean(adjclose,na.rm=TRUE),sP=sd(adjclose,na.rm=TRUE),
 dtreshaped<-dcast(data=dt,tday~ticker,value.var='ret')
 dtreshaped
 
-
 #Use function to calculate alpha and beta
 #Between Kone and the OMX-index
 
 alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
+#################################################
 
-
-#################################
-#Patriks function
+#################################################
+#Patrik's function & example
 
 #Calculating the geometrical mean
 geo.mean <-function(x) {
@@ -213,43 +125,34 @@ geo.mean <-function(x) {
   gm <-prod.x^ (1/n)
   return(gm)
 }
-#geometrical mean of a stock price during a week Mon-Fri
-#c represents a vector with values
+#Example with a share price during a trading week
+#here c represents a vector with share prices
 geo.mean(c(2.5,2.36,2.63,2.69,2.74))
+#################################################
 
-#######################
-#Alinas function 1
+#################################################
+#Alina's function & example
+
+#Return the theoretical mean and variance
 myTheoreticalMeanVar<-function(a, b, T) {
-  mean<- a*T    #estimate theoretical mean
-  var<- (b^2)*T  #estimate theoretical var
+  #estimate theoretical mean
+  mean<- a*T
+  #estimate theoretical var
+  var<- (b^2)*T  
+  #bind the results into a table
   result<-cbind(mean, var)
   return(result) #return the mean & variance
 }
 
-#Quiz1, Q1, {X_t}, t=0.1
-myTheoreticalMeanVar(1.3, 1.5, 0.1)
-
-#Alinas function 2
-#For a sequence of interarrival times return arrival times
-myArrivaltimes <-function(vect) {
-  #return the sequence of cumulative sums of interarrival times
-  c(cumsum(vect)) 
-}
-vect<- c(rexp(16, rate = 5.9))
-vect<- signif(vect, 2)
-myArrivaltimes(vect)
+#Example from Quiz1, Q1, {X_t}, t=0.1
+myTheoreticalMeanVar(a=1.3, b=1.5, T=0.1)
+#################################################
 
 
-##############################
+#################################################
+#Oskar's function & example
 
 #Define the function for the discrete-time model
-#
-
-
-
-
-Oskars example
-
 DiscreteTimeProcess <- function(T,mu,sigma,S,deltat,R){
   t<-seq(from=0,to=T,by=deltat)
   result <- NULL
@@ -259,8 +162,9 @@ DiscreteTimeProcess <- function(T,mu,sigma,S,deltat,R){
     result <- rbind(result,temp)}
   return(result)
 }
-library(ggplot2)
-output<-DiscTimeProcess(1,0.01,0.05,10,1/252,1)
+#Example
+output<-DiscreteTimeProcess(1,0.01,0.05,10,1/252,1)
 gg<-ggplot(data=output,aes(x=t,y=valueS,col=rep))+geom_line()
 gg<-gg+theme(legend.position='none')
 print(gg)
+#################################################
