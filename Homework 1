@@ -132,23 +132,29 @@ geo.mean <-function(x) {
 geo.mean(c(2.5,2.36,2.63,2.69,2.74))
 #################################################
 
-#################################################
 #Alina's function & example
+#################################################
+#Return the theoretical mean and variance of the
+#Generalized Wiener Process, with drift a and
+#diffusion b and the time horizon T.
+#In the function the mean and variance are
+#estimated according to the theory for GWP.
+#Thereafter, the results are added to a data.frame
+#and lastly, returns the data.frame.
+#The example is from Quiz1, Q1, {X_t}, t=0.1
+#################################################
 
-#Return the theoretical mean and variance
 myTheoreticalMeanVar<-function(a, b, T) {
-  #estimate theoretical mean
   mean<- a*T
-  #estimate theoretical var
   var<- (b^2)*T  
-  #bind the results into a table
-  result<-cbind(mean, var)
-  return(result) #return the mean & variance
+  result<-data.frame(mean=mean, variance=var)
+  return(result)
 }
 
-#Example from Quiz1, Q1, {X_t}, t=0.1
 myTheoreticalMeanVar(a=1.3, b=1.5, T=0.1)
+
 #################################################
+
 
 #Oskars example
 ##################################################
@@ -176,3 +182,4 @@ output<-DiscreteTimeProcess(1,0.01,0.05,10,1/252,1)
 gg<-ggplot(data=output,aes(x=time,y=valueS,col=rep))+geom_line()
 gg<-gg+theme(legend.position='none')
 print(gg)
+##################################################
