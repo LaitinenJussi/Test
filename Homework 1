@@ -54,7 +54,7 @@ gg<-gg+geom_line()
 gg+ggtitle("Drift=-0.7, Diffusion=0")
 
 output3 <- myGWP(T=2.3, deltat=0.01, a=0, b=1, R=6)
-ggplot(data=output3,aes(x=time,y=value,col=rep))
+gg<-ggplot(data=output3,aes(x=time,y=value,col=rep))
 gg<-gg+geom_line()
 gg+ggtitle("Drift=0, Diffusion=1")
 
