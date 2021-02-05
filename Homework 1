@@ -80,7 +80,7 @@ myGWP<-function(T,deltat,a,b,R) {
   result<-NULL
   for(r in 1:R) {
   x<-cumsum(c(0,a*deltat+b*sqrt(deltat)
-            *rnorm(n=length(t)-1, mean =0,sd=2.3)))
+            *rnorm(n=length(t)-1)))
   temp<-data.frame(time=t,value=x,rep=paste(r),
                  drift=paste(a),diffusion=paste(b))
   result<-rbind(result,temp)
@@ -88,21 +88,21 @@ myGWP<-function(T,deltat,a,b,R) {
   return(result)
 }
 
-output <-myGWP(T=1,deltat=0.01,a=-0.7,b=0.1, R=6)
+output <-myGWP(T=2.3,deltat=0.01,a=-0.7,b=0.1, R=6)
 ggplot(data=output,aes(x=time,y=value,col=rep))
         +geom_line()
         +ggtitle("Expected drift rate = -0.7,
                   Variance rate = 0.1")
         
 set.seed(2141)
-output2 <- myGWP(T=1,deltat=0.01,a=-0.07,b=0,R=6)
+output2 <- myGWP(T=2.3,deltat=0.01,a=-0.07,b=0,R=6)
 ggplot(data=output2,aes(x=time,y=value,col=rep))
       +geom_line()
       +ggtitle("Expected drift rate = -0.07,
                 Variance rate = 0")
 
 set.seed(2141)
-output3 <- myGWP(T=1, deltat=0.01, a=0, b=1, R=6)
+output3 <- myGWP(T=2.3, deltat=0.01, a=0, b=1, R=6)
 ggplot(data=output3,aes(x=time,y=value,col=rep))
        +geom_line()
        +ggtitle("Expected drift rate = 0, 
@@ -233,10 +233,17 @@ vect<- signif(vect, 2)
 myArrivaltimes(vect)
 
 
-#######################
+##############################
+
+#Define the function for the discrete-time model
+#
+
+
+
+
 Oskars example
 
-DiscTimeProcess <- function(T,mu,sigma,S,deltat,R){
+DiscreteTimeProcess <- function(T,mu,sigma,S,deltat,R){
   t<-seq(from=0,to=T,by=deltat)
   result <- NULL
   for(r in 1:R){
