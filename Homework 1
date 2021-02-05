@@ -117,20 +117,21 @@ alphabeta(x=dtreshaped$OMXH,y=dtreshaped$KNEBV)
 
 #################################################
 #Patrik's function & example
-
+#############################
 #Calculating the geometrical mean
+#n represents the number of observations
+#dividing the function by the number of observations
+#Example with a share price during a trading week
+#here c represents a vector with share prices
+#############################
+
 geo.mean <-function(x) {
   prod.x <-prod(x)
-  #n represents the number of observations
   n <- length(x)
-  #dividing the function by the number of observations
   gm <-prod.x^ (1/n)
   return(gm)
 }
-#Example with a share price during a trading week
-#here c represents a vector with share prices
 geo.mean(c(2.5,2.36,2.63,2.69,2.74))
-#################################################
 
 #Alina's function & example
 #################################################
