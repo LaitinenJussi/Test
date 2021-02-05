@@ -38,12 +38,14 @@ myGWP<-function(T,deltat,a,b,R) {
   return(result)
 }
 ##################################################
+
+##################################################
 RNGkind(sample.kind = "Rejection")
 set.seed(2141)
 
 output <-myGWP(T=2.3,deltat=0.01,a=-0.7,b=0.1, R=6)
 gg<-ggplot(data=output,aes(x=time,y=value,col=rep))
-gg<-gg +geom_line()
+gg<-gg+geom_line()
 gg+ggtitle("Drift=-0.7, Diffusion=0.1")
         
 output2 <- myGWP(T=2.3,deltat=0.01,a=-0.7,b=0,R=6)
