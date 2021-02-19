@@ -1,0 +1,135 @@
+#This space is reserved for the teacher:
+#Ex1: NA
+#Ex2 (2pts): 
+#Ex3 (2pts): 
+#Feedback:
+#
+#
+#
+#################################################
+#Rscript for HW3
+
+#Group nr: ...
+#Members:
+#...
+#...
+#...
+#...
+#Member whose quiz variant is used for coding:
+#...
+
+#Annotations guidelines:
+#Ex2: use two comment boxes; do NOT use in-line comments (see below for details)
+#Ex3: use one comment box; keep the in-line comments, 
+#the original ones plus those that you modified (see below for details)
+
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+
+#################################################
+#function to generate R paths of the GBM {S_t}
+#with parameters mu and sigma on [0,T]; arguments:
+#S0: [num] value of the process at time t=0
+#mu: [num] drift parameter of the GBM
+#sigma: [num] diffusion parameter of the GBM
+#T: [num] right-end point of the interval [0,T]
+#deltat: [num] time-step to discretize [0,T]
+#R: [int] the number of paths/reps
+#output: data.frame with 
+#(rep,drift,diffusion)-tagged paths
+#################################################
+myGeometricBrownianMotion<-function(S0,mu,sigma,T,deltat,R)
+{
+  t<-seq(from=0,to=T,by=deltat)
+  result<-NULL 
+  for(r in 1:R)
+  { 
+    z<-cumsum(c(0,sqrt(deltat)*rnorm(n=length(t)-1)))
+    s<-exp(log(S0)+(mu-sigma^2/2)*t+sigma*z)
+    temp<-data.frame(time=t,value=s,rep=paste(r),
+                     mu=paste(mu),sigma=paste(sigma)) 
+    result<-rbind(result,temp) 
+  } 
+  return(result)
+}
+#################################################
+#function to generate R realizations of the 
+#random variable S_T, where {S_t} is the GBM 
+#with parameters mu and sigma on [0,T]; arguments:
+#S0: [num] value of the process at time t=0
+#mu: [num] drift parameter of the GBM
+#sigma: [num] diffusion parameter of the GBM
+#T: [num] right-end point of the interval [0,T]
+#R: [int] the number of realizations/reps
+#output: [num] vector with R realizations of S_T
+#################################################
+myST<-function(S0,mu,sigma,T,R)
+{
+  constant1<-S0*exp((mu-sigma^2/2)*T) 
+  constant2<-sigma*sqrt(T) 
+  
+  ST<-constant1*exp(constant2*rnorm(n=R))
+  
+  return(ST)
+}  
+
+#comment box related to the declaration of input variables
+#################################################
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#################################################
+#corresponding Rcode next
+
+
+#comment box related to the remaining tasks
+#################################################
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#################################################
+#corresponding Rcode next
+
+#################################################Code for Exercise 3
+#################################################Code for Exercise 3
+#################################################Code for Exercise 3
+
+#comment box to say which parts of BullSpreadCallDeltaGamma.R
+#you had to modify to implement put-based strategy
+#################################################
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#################################################
+#corresponding Rcode (with in-line comments) next
+
+
+
+
+
+
+
+
+
