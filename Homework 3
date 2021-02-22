@@ -88,13 +88,18 @@ myST<-function(S0,mu,sigma,T,R)
 #                                                                                               
 #   
 #################################################
-TCKR <- "AAPL" #adjust to data + ta senare bort inline comments
+TCKR <- "MFST" #adjust to data + ta senare bort inline comments
 today<- "20210203" #adjust
 oneyearago <- "20200203" #adjust
-S0<-134.98 #adjust
-c<-8.67 #adjust
-TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
+S0 <-239.48 #adjust
+optionprice <- 17.86  #adjust
+TTE <-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
 rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd == today), c(5)] #man måst ännu ändra till annualized return, hjälp
+
+historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
+logprices <- log(historicalprices)
+volatility_log <- sd(logprices)/sqrt(1/length(logprices))   # volatility = sd / sqrt(tau), tau = 1/254
+volatility_log <- round(volatility_log/100, 4)
 
 #comment box related to the remaining tasks
 #################################################
