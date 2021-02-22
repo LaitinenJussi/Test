@@ -79,6 +79,7 @@ myST<-function(S0,mu,sigma,T,R)
 # We declare the following input variables
 # TCKR : the ticker symbol of the stock
 # today : 
+# oneyearago : exactly one year ago from today
 # SO : The market price of the stock: use the "Last"
 # c : market price of the call option / "Last sale"
 # TTE : time-to-expiry in years     
@@ -87,8 +88,9 @@ myST<-function(S0,mu,sigma,T,R)
 #                                                                                               
 #   
 #################################################
-TCKR <- "AAPL" #adjust to data + ta bort inline comments
+TCKR <- "AAPL" #adjust to data + ta senare bort inline comments
 today<- "20210203" #adjust
+oneyearago <- "20200203" #adjust
 S0<-134.98 #adjust
 c<-8.67 #adjust
 TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
@@ -96,7 +98,7 @@ rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd =
 
 #comment box related to the remaining tasks
 #################################################
-#                                                                                               
+# Stock Price volatility estimate                                                                                    
 #                                                                                               
 #                                                                                               
 #                                                                                               
@@ -108,6 +110,8 @@ rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd =
 #                                                                                               
 #################################################
 #corresponding Rcode next
+historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
+mean(historicalprices)
 
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
