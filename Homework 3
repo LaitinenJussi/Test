@@ -92,7 +92,7 @@ today<- "20210203" #adjust
 S0<-134.98 #adjust
 c<-8.67 #adjust
 TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
-rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd == today), c(5)]
+rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd == today), c(5)] #man måst ännu ändra till annualized return, hjälp
 
 #comment box related to the remaining tasks
 #################################################
