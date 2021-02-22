@@ -1,3 +1,5 @@
+RNGkind(sample.kind = 'Rejection')
+
 #This space is reserved for the teacher:
 #Ex1: NA
 #Ex2 (2pts): 
@@ -9,14 +11,14 @@
 #################################################
 #Rscript for HW3
 
-#Group nr: ...
+#Group nr: 5
 #Members:
-#...
-#...
-#...
+#Alina-Emelie Andersson
+#Jussi Laitinen
+#Oskar Lindman
 #...
 #Member whose quiz variant is used for coding:
-#...
+#Jussi Laitinen
 
 #Annotations guidelines:
 #Ex2: use two comment boxes; do NOT use in-line comments (see below for details)
@@ -75,44 +77,60 @@ myST<-function(S0,mu,sigma,T,R)
 }  
 
 #comment box related to the declaration of input variables
-#################################################                                                                                            
-# We declare the following input variables
-# TCKR : the ticker symbol of the stock
-# today : 
-# oneyearago : exactly one year ago from today
-# SO : The market price of the stock: use the "Last"
-# c : market price of the call option / "Last sale"
-# TTE : time-to-expiry in years     
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#   
 #################################################
-TCKR <- "AAPL" #adjust to data + ta senare bort inline comments
-today<- "20210203" #adjust
-oneyearago <- "20200203" #adjust
-S0<-134.98 #adjust
-c<-8.67 #adjust
-TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
-rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd == today), c(5)] #man måst ännu ändra till annualized return, hjälp
-
-#comment box related to the remaining tasks
-#################################################
-# Stock Price volatility estimate                                                                                    
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
+#Stockprice, optionprice and strikeprice taken
+#from option quote data-file. TTE (Time to exipiry)                                                                                                
+#calculated april-february/12 and rounded to 2 digits.                                                                                               
+#Riskfree intrest rate is assigned as today's value for                                                                                                
+#3 month-maturity T-Bill rate in:                                                                                              
+#DailyTreasuryYieldCurveRates.txt                                                                                                
+#R1 & R2 are  amount of replicates in Monte Carlo                                                                                            
+#Stockhistory for the underlying stock to European MSFT                                                                                              
+#loaded and taken from STtockPrices. Estimated volatility 
+# calculated from assigned 1 year subset of Stockhistory
 #################################################
 #corresponding Rcode next
-historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
-mean(historicalprices)
-
+library('derivmkts')
+library('ggplot')
+stockprice <- 239.48
+optionprice <- 17.86
+strikeprice <- 230.00
+TTE <- round((4-2)/12, digits = 2)
+riskfreerate <- 0.03
+deltat <- 0.01
+R1 <- 10000
+R2 <- 10 
+prices <-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
+stockhistory <- prices[c(2,4)]
+oneyearyyyymmdd <- stockhistory[which(stockhistory$yyyymmdd >= max(stockhistory$yyyymmdd)-10000 ),]
+volatility <- round(sd(oneyearyyyymmdd$MSFT)/100, digits =4) 
+#comment box related to the remaining tasks
+#################################################
+#First calculate the value of the option using Black-Scholes                                                                                             
+#Calculating delta and gamma using greeks-function in derivmkts                                                                                               
+#Rounding delta and gamma to 4 digits                                                                                              
+#Calculate the implied volatility using Black-Scholes                                                                                               
+#Set seed to control the randomness                                                                                               
+#Simulating S_t for 10000 replicates using myST-function                                                                                               
+#Calculating payoffs for each replicated stockprice S_t                                                                                               
+#Calculating the Monte Carlo value of the call option                                                                                              
+#Simulating 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
+#Plotting simulated paths using ggplot                                                                                              
+#################################################
+#corresponding Rcode next
+bsprice <- bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0)
+greeks1 <- greeks(bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0))
+delta <- round(greeks1[2], digits = 4)
+gamma <- round(greeks1[3], digits = 4)
+impvol <- bscallimpvol(stockprice, strikeprice, riskfreerate, TTE, 0, optionprice)
+set.seed(11705)
+simulation1 <- myST(stockprice, riskfreerate, volatility, TTE, R1)
+payoff <- ifelse(test=simulation1-strikeprice >0, yes=simulation1-strikeprice, no=0)
+callMC <- exp(-riskfreerate*(TTE-0))*mean(payoff)
+simulation2 <- myGeometricBrownianMotion(stockprice, riskfreerate, volatility, TTE, deltat, R2)
+gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep)) 
+gg <- gg+geom_line()
+print(gg)
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
