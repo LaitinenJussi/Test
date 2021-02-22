@@ -96,14 +96,14 @@ stockprice <- 239.48
 optionprice <- 17.86
 strikeprice <- 230.00
 TTE <- round((4-2)/12, digits = 2)
-riskfreerate <- 0.03
+riskfreerate <- 0.03                  #as percentage, adjust to 0.0003? annualized? 
 deltat <- 0.01
 R1 <- 10000
 R2 <- 10 
 prices <-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
 stockhistory <- prices[c(2,4)]
-oneyearyyyymmdd <- stockhistory[which(stockhistory$yyyymmdd >= max(stockhistory$yyyymmdd)-10000 ),]
-volatility <- round(sd(oneyearyyyymmdd$MSFT)/100, digits =4) 
+oneyearyyyymmdd <- stockhistory[which(stockhistory$yyyymmdd >= max(stockhistory$yyyymmdd)-10000 ),]      #blir lite fel då today är 3.2.2021, så intervallet borde vara 3.2.2020-3.2.2021
+volatility <- round(sd(oneyearyyyymmdd$MSFT)/100, digits =4)          #volatility med log-returns
 #comment box related to the remaining tasks
 #################################################
 #First calculate the value of the option using Black-Scholes                                                                                             
