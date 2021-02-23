@@ -150,6 +150,130 @@ print(gg)
 #                                                                                               
 #################################################
 #corresponding Rcode (with in-line comments) next
+#comment box to say which parts of BullSpreadCallDeltaGamma.R
+#you had to modify to implement put-based strategy
+#################################################
+# Modified ticker and date according to assignment
+# Modified the calculation of option value from call                                                                                              
+# to put.                                                                                               
+# Modified payouts from call payouts to put payouts                                                                                               
+# Modified initial cashflows to get correct profits                                                                                                
+# Modified Greeks to be calculated from puts           
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#                                                                                               
+#################################################
+#corresponding Rcode (with in-line comments) next
+rm(list=ls()) # clear the workspace
+
+
+# load the necessary Rpackages 
+library('quantmod') #data download
+library('derivmkts') #option-related functions 
+library('data.table') #data manipulation
+library('ggplot2') #plotting
+
+# obtain daily stock price data for the implementation of the strategy 
+# (observed path of the process {S_t} in the real world)
+myticker<-'EBAY' #Change ticker
+mystart<-'2018-02-01' #Change date 
+myend<-'2019-11-22' #Change date
+
+mydata<-getSymbols.yahoo(Symbols=myticker,from=mystart,to=myend,auto.assign=FALSE)
+head(mydata)
+tail(mydata)
+
+# adjust 'start' date to the first available date = 'today' (in 'Date' format) 
+# adjust 'end' date to the last available date = expiry date (in 'Date' format)
+mystart<-time(mydata)[1]  
+myend<-time(mydata)[length(time(mydata))]
+
+mydata<-as.data.frame(mydata)
+# to mydata, append a new variable/column 'time' with time-step deltat=1/252 and round it
+mydata$time<-round(x=seq(from=0,to=(nrow(mydata)-1)/252,by=1/252),digits=4) 
+head(mydata)
+tail(mydata)
+
+# obtain 'historical' (wrt 'today') daily stock price data to estimate sigma parameter
+# (for simplicity, use one year of daily observations) 
+myhiststart<-mystart-365 #this works becasue 'mystart' is in 'Date' format
+myhistend<-mystart
+myhistdata<-getSymbols.yahoo(myticker,from=myhiststart,to=myhistend,
+                             auto.assign=FALSE)
+myhistdata<-as.data.frame(myhistdata)
+
+# find estimate of sigma, round it 
+SIGMA<-round(x=sd(diff(log(myhistdata[,6])))*sqrt(252),digits=4) 
+T<-tail(x=mydata$time,n=1) #extract expiry time T = the last element of 'time'
+
+# obtain the risk-free rate for 'today';
+# for simplicity, we use 3-month maturity; 
+# rates are in percentages and are annualized
+mysymbol<-'DGS3MO'      
+myratedata<-getSymbols(Symbols=mysymbol,src='FRED',auto.assign = FALSE)
+RFREE<-myratedata[time(myratedata)==mystart][[1]]*0.01 
+RFREE
+
+
+# extract/declare/calculate relevant variables 
+# for the implementation of the strategy:
+# K1 = the strike price of the short put
+# K2 = the strike price of the long put, where K1<K2; 
+time<-mydata$time #time (num vector)
+S<-mydata[,6] #stock price  (num vector)
+TTE<-T-mydata$time #time-to-expiry (num vector)
+K1 <- 33.4; K2 <- 37
+
+# calculate option prices in Rpackage derivmkts:
+# c1 = the price of the put with strike K1 (rounded to 4 decimals)
+# c2 = the price of the put with strike K2 (rounded to 4 decimals)
+c1<-bsput(s = S, k = K1, v = SIGMA, r = RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the short put
+c1<-round(c1,4)
+c2<-bsput(s = S, k = K2, v = SIGMA, r = RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the long put
+c2<-round(c2,4)
+
+
+# calculate the payoffs (round all to 4 decimals): 
+# payoff1 = the payoff from the long put with strike K1
+# payoff2 = the payoff from the short put with strike K2
+# payoff = the total payoff payoff1<- -ifelse(test=S-K2z0,S-K1 yes= ,no=0);payoff1<-round(x=payoff1,digits=4)
+payoff1<- ifelse(test=S-K1<0,yes= K1-S,no=0);payoff1<-round(x=payoff1,digits=4)    #Change payoff to put payoffs
+payoff2<- ifelse(test=S-K2<0,yes=-(K2-S),no=0);payoff2<-round(x=payoff2,digits=4)  #Change payoff to put payoffs
+payoff<-payoff1+payoff2;payoff<-round(x=payoff,digits=4)
+
+
+# calculate the profit (profit=the total payoff minus the initial investment); 
+# negative profit = loss
+profit<-payoff-(-c1[1]+c2[1]);profit<-round(x=profit,digits=4) #change cashflow to puts
+# c1[1]=price of the put with strike K1 at time 0
+# c2[1]=price of the put with strike K2 at time 0
+profit
+# calculate additional quantities (delta, gamma) in Rpackage derivmkts:
+# delta1 = delta of the put with strike K1 (rounded to 4 decimals)
+# gamma1 = gamma of the put with strike K1 (rounded to 4 decimals)
+# delta2 = delta of the put with strike K2 (rounded to 4 decimals)
+# gamma2 = gamma of the put with strike K2 (rounded to 4 decimals)
+greeks1<-greeks2(bsput,list(s = S, k = K1, v = SIGMA, r = RFREE, tt = TTE, d = 0)) #Change to puts 
+delta1<-greeks1['Delta',];delta1<-round(x=delta1,digits=4)
+gamma1<-greeks1['Gamma',];gamma1<-round(x=gamma1,digits=4)
+greeks2<-greeks2(bsput, list(s = S, k = K2, v = SIGMA, r = RFREE, tt = TTE, d = 0)) #Change to puts
+delta2<-greeks2['Delta',];delta2<-round(x=delta2,digits=4)
+gamma2<-greeks2['Gamma',];gamma2<-round(x=gamma2,digits=4)
+
+# create a data.table with the relevant variables for plotting
+mydt<-data.table(time,S,TTE,c1,c2,payoff1,payoff2,payoff,profit,delta1,delta2,gamma1,gamma2)
+
+# re-shape/melt the data.table for the purpose of plotting in ggplot2
+mydtmolten<-melt.data.table(data=mydt,id.vars='time')
+mydtmolten 
+help('melt.data.table')
+
+# obtain the multi-panel figure in ggplot2 
+gg<-ggplot(data=mydtmolten,aes(x=time,y=value))+geom_line()
+gg<-gg+facet_wrap(.~variable,nrow=2,scales="free_y") #2 rows of subplots, free range for y-axis 
+print(gg)
 
 
 
