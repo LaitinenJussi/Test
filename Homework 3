@@ -109,7 +109,7 @@ stockhistory <- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today,
 stockhistory
 volatility<- sd(stockhistory)*0.01
 logreturns <- diff(log(stockhistory))
-volatility <- sd(logreturns)/sqrt(1/252))*0.01 
+volatility <- sd(logreturns)/sqrt(1/252)*0.01 
 volatility
 #comment box related to the remaining tasks
 #################################################
