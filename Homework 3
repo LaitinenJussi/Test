@@ -108,8 +108,8 @@ tail(prices)
 stockhistory <- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
 stockhistory
 volatility<- sd(stockhistory)*0.01
-logprices <- log(stockhistory)
-volatility <- sd(logprices)/sqrt(1/length(logprices))*0.01 
+logreturns <- diff(log(stockhistory))
+volatility <- sd(logreturns)/sqrt(1/252))*0.01 
 volatility
 #comment box related to the remaining tasks
 #################################################
