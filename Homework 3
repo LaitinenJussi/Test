@@ -76,47 +76,65 @@ myST<-function(S0,mu,sigma,T,R)
 
 #comment box related to the declaration of input variables
 #################################################                                                                                            
+# Import the datasets DailyTreasuryYieldCurveRates
+# and StockPrices
 # We declare the following input variables
-# TCKR : the ticker symbol of the stock
-# today : 
-# oneyearago : exactly one year ago from today
-# SO : The market price of the stock: use the "Last"
-# c : market price of the call option / "Last sale"
-# TTE : time-to-expiry in years     
+# TCKR : [chr] the ticker symbol of the stock
+# today : [num] the date as yyyymmdd assigned for t=0
+# SO : [num] the market price of the stock at t=0
+# K : [num] strike price at maturity
+# c : [num] market price of the call option
+# TTE : [num] time-to-expiry in years
+# volatility : [num] estimated with log-returns 
 #                                                                                               
 #                                                                                               
 #                                                                                               
 #   
 #################################################
-TCKR <- "MFST" #adjust to data + ta senare bort inline comments
-today<- "20210203" #adjust
-oneyearago <- "20200203" #adjust
-S0 <-239.48 #adjust
-optionprice <- 17.86  #adjust
-TTE <-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
-rf <- DailyTreasuryYieldCurveRates[which(DailyTreasuryYieldCurveRates$yyyymmdd == today), c(5)] #man måst ännu ändra till annualized return, hjälp
+TCKR <- "MFST"
+today<- 20210203 
+oneyearago <- today-10000
+S0 <-239.48
+optionprice <- 17.86
+TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
+treasury <- DailyTreasuryYieldCurveRates
+rf <- treasury[which(treasury$yyyymmdd == today), c(5)]*0.01
+deltat <- 0.01
+R1 <- 10
+R2 <- 10000
 
 historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
 logprices <- log(historicalprices)
-volatility_log <- sd(logprices)/sqrt(1/length(logprices))   # volatility = sd / sqrt(tau), tau = 1/254
-volatility_log <- round(volatility_log/100, 4)
+volatility <- sd(logprices)/sqrt(1/length(logprices))*0.01  
 
-#comment box related to the remaining tasks
 #################################################
-# Stock Price volatility estimate                                                                                    
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
+#First calculate the value of the option using Black-Scholes                                                                                             
+#Calculating delta and gamma using greeks-function in derivmkts                                                                                               
+#Rounding delta and gamma to 4 digits                                                                                              
+#Calculate the implied volatility using Black-Scholes                                                                                               
+#Set seed to control the randomness                                                                                               
+#Simulating S_t for 10000 replicates using myST-function                                                                                               
+#Calculating payoffs for each replicated stockprice S_t                                                                                               
+#Calculating the Monte Carlo value of the call option                                                                                              
+#Simulating 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
+#Plotting simulated paths using ggplot                                                                                              
 #################################################
-#corresponding Rcode next
-historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
-mean(historicalprices)
+
+bsprice <- bscall(S0, K, volatility, rf, TTE, 0)
+greeks1 <- greeks(bscall(S0, K, volatility, rf, TTE, 0))
+delta <- round(greeks1[2], digits = 4)
+gamma <- round(greeks1[3], digits = 4)
+impvol <- bscallimpvol(S0, K, rf, TTE, 0, c)
+
+set.seed(11705)
+
+simulation1 <- myST(S0, rf, volatility, TTE, R1)
+payoff <- ifelse(test=simulation1-K > 0, yes=simulation1-K, no=0)
+callMC <- exp(-rf*(TTE-0))*mean(payoff)
+simulation2 <- myGeometricBrownianMotion(K, rf, volatility, TTE, deltat, R2)
+gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep)) 
+gg <- gg+geom_line()
+print(gg)
 
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
