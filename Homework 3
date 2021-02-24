@@ -96,14 +96,13 @@ today<- 20210203
 oneyearago <- today-10000
 S0 <-239.48
 optionprice <- 17.86
-TTE<-round((4-2)/12,2)  #adjust, start month feb (2), end month april (4)
-treasury <- DailyTreasuryYieldCurveRates
-rf <- treasury[which(treasury$yyyymmdd == today), c(5)]*0.01
+TTE<-round((4-2)/12,2) 
+rf <- 0.04*0.01
 deltat <- 0.01
 R1 <- 10
 R2 <- 10000
-
-historicalprices <- StockPrices[StockPrices$yyyymmdd >= oneyearago & StockPrices$yyyymmdd <= today, c(TCKR)]
+mystockdata<-read.table(file='C:/.../StockPrices.txt', header=TRUE)
+historicalprices <- mystockdata[mystockdata$yyyymmdd >= oneyearago & mystockdata$yyyymmdd <= today, c(TCKR)]
 logprices <- log(historicalprices)
 volatility <- sd(logprices)/sqrt(1/length(logprices))*0.01  
 
