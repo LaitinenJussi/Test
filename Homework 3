@@ -91,65 +91,63 @@ myST<-function(S0,mu,sigma,T,R)
 #################################################
 #corresponding Rcode next
 library('derivmkts')
-library('ggplot')
-TCKR <- "MSFT"
-stockprice <- 239.48
-optionprice <- 17.86
-strikeprice <- 230.00
-TTE <- round((4-2)/12, digits = 2)
-riskfreerate <- 0.04*0.01                  
-deltat <- 0.001
-R1 <- 10000
-R2 <- 10 
-today <- 20210203
-oneyearago <- today-10000
-prices <-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
-tail(prices)
+library('ggplot2')
+TCKR<- "MSFT"
+S0<- 239.48
+c<- 17.86
+K<- 230.00
+TTE<- round((4-2)/12, digits=2)
+rf<- 0.04*0.01                  
+deltat<- 0.001
+R1<- 10000; R2<- 10 
+today<- 20210203
+oneyearago<- today-10000
 
-stockhistory <- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
-stockhistory
+mystockdata<-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
+stockhistory<- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
 
 #comment box related to the remaining tasks
 #################################################
-#logreturns: logaritmic returns of stockhistory
-#volatility: Estimated volatility calculated using the logreturns
+#logreturns: Logaritmic returns of stockhistory
+#vol: Estimated volatility calculated using the logreturns
 #bsprice: Estimated value of the call-option using bscall-function                                                                                             
 #Estimated delta and gamma using greeks-function                                                                                                
 #Rounding delta and gamma to 4 digits                                                                                              
 #Estimated implied volatility using bsimpvol-function                                                                                               
 #Set seed to control the randomness                                                                                               
-#Simluation2: 10000 replicates for S_t using myST-function                                                                                               
+#sim1: 10000 replicates for S_t using myST-function                                                                                               
 #Calculating payoffs for each replicated stockprice S_t                                                                                               
-#CallMC: Monte Carlo value of the call option using payoff                                                                                              
-#Simulation2: 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
-#Plotting simulated paths using ggplot
-#
+#callMC: Monte Carlo value of the call option using payoff                                                                                              
+#sim2: 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
+#Plotting simulated paths using ggplot.
+#By subsetting path 6 from sim2, the length of the
+#vector and the last three values of S_6 are returned.
 #################################################
 #corresponding Rcode next
 logreturns <- diff(log(stockhistory))
-volatility <- sd(logreturns)/sqrt(1/252) 
+vol <- sd(logreturns)/sqrt(1/252) 
 
-bsprice <- bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0)
+bsprice<- bscall(S0, K, vol , rf, TTE, 0)
 
-greeks1 <- greeks(bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0))
-delta <- round(greeks1[2], digits = 4)
-gamma <- round(greeks1[3], digits = 4)
-
-impvol <- bscallimpvol(stockprice, strikeprice, riskfreerate, TTE, 0, optionprice)
+greeks1<- greeks(bscall(S0, K, vol , rf, TTE, 0))
+delta<- round(greeks1[2], digits = 4)
+gamma<- round(greeks1[3], digits = 4)
+impvol<- bscallimpvol(S0, K, rf, TTE, 0, c)
+round(impvol,4)
 
 set.seed(11705)
 
-simulation1 <- myST(stockprice, riskfreerate, volatility, TTE, R1)
-payoff <- ifelse(test=simulation1-strikeprice >0, yes=simulation1-strikeprice, no=0)
+sim1<- myST(S0, rf, vol, TTE, R1)
+payoff<- ifelse(test=sim1-K >0, yes=sim1-K, no=0)
+callMC<- exp(-rf*(TTE-0))*mean(payoff)
+round(callMC,4)
 
-callMC <- exp(-riskfreerate*(TTE-0))*mean(payoff)
-
-simulation2 <- myGeometricBrownianMotion(stockprice, riskfreerate, volatility, TTE, deltat, R2)
-gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep)) 
-gg <- gg+geom_line()
+sim2<- myGeometricBrownianMotion(S0,rf,vol,TTE,deltat,R2)
+gg<- ggplot(data=sim2,aes(x=time,y=value,col=rep)) 
+gg<- gg+geom_line()
 print(gg)
 
-rep6<-simulation2[simulation2$rep == 6,]
+rep6<-sim2[simu2$rep == 6, 2]
 length(rep6)
 tail(rep6, n=3)
 
@@ -167,7 +165,7 @@ tail(rep6, n=3)
 # Modified payoffs from call payouts to put payouts                                                                                               
 # Modified initial cashflows to get correct profits                                                                                                
 # Modified Greeks input to be greeks from puts           
-#                                                                                               
+# Change c1 and c2 to p1 and p2                                                                                              
 #                                                                                               
 #                                                                                               
 #                                                                                               
@@ -229,18 +227,18 @@ RFREE
 # for the implementation of the strategy:
 # K1 = the strike price of the short put
 # K2 = the strike price of the long put, where K1<K2; 
-time<-mydata$time #time (num vector)
-S<-mydata[,6] #stock price  (num vector)
+time<- mydata$time #time (num vector)
+S<- mydata[,6] #stock price  (num vector)
 TTE<-T-mydata$time #time-to-expiry (num vector)
-K1 <- 33.4; K2 <- 37
+K1<- 33.4; K2<- 37
 
 # calculate option prices in Rpackage derivmkts:
-# c1 = the price of the put with strike K1 (rounded to 4 decimals)
-# c2 = the price of the put with strike K2 (rounded to 4 decimals)
-c1<-bsput(s = S, k = K1, v = SIGMA, r = RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the short put
-c1<-round(c1,4)
-c2<-bsput(s = S, k = K2, v = SIGMA, r = RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the long put
-c2<-round(c2,4)
+# p1 = the price of the put with strike K1 (rounded to 4 decimals)
+# p2 = the price of the put with strike K2 (rounded to 4 decimals)
+p1<-bsput(s=S, k=K1, v=SIGMA, r=RFREE, tt= TTE, d=0) #Change bscall to bsput. This is the value of the short put
+p1<-round(p1,4)
+p2<-bsput(s=S, k=K2, v=SIGMA, r=RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the long put
+p2<-round(p2,4)
 
 
 # calculate the payoffs (round all to 4 decimals): 
@@ -249,14 +247,14 @@ c2<-round(c2,4)
 # payoff = the total payoff payoff1<- -ifelse(test=S-K2z0,S-K1 yes= ,no=0);payoff1<-round(x=payoff1,digits=4)
 payoff1<- ifelse(test=S-K1<0,yes= K1-S,no=0);payoff1<-round(x=payoff1,digits=4)    #Change payoff to put payoffs
 payoff2<- ifelse(test=S-K2<0,yes=-(K2-S),no=0);payoff2<-round(x=payoff2,digits=4)  #Change payoff to put payoffs
-payoff<-payoff1+payoff2;payoff<-round(x=payoff,digits=4)
+payoff<- payoff1+payoff2;payoff<-round(x=payoff,digits=4)
 
 
 # calculate the profit (profit=the total payoff minus the initial investment); 
 # negative profit = loss
-profit<-payoff-(-c1[1]+c2[1]);profit<-round(x=profit,digits=4) #change cashflow to puts
-# c1[1]=price of the put with strike K1 at time 0
-# c2[1]=price of the put with strike K2 at time 0
+profit<-payoff-(-p1[1]+p2[1]);profit<-round(x=profit,digits=4) #change cashflow to puts
+# p1[1]=price of the put with strike K1 at time 0
+# p2[1]=price of the put with strike K2 at time 0
 profit
 # calculate additional quantities (delta, gamma) in Rpackage derivmkts:
 # delta1 = delta of the put with strike K1 (rounded to 4 decimals)
@@ -271,7 +269,7 @@ delta2<-greeks2['Delta',];delta2<-round(x=delta2,digits=4)
 gamma2<-greeks2['Gamma',];gamma2<-round(x=gamma2,digits=4)
 
 # create a data.table with the relevant variables for plotting
-mydt<-data.table(time,S,TTE,c1,c2,payoff1,payoff2,payoff,profit,delta1,delta2,gamma1,gamma2)
+mydt<-data.table(time,S,TTE,p1,p2,payoff1,payoff2,payoff,profit,delta1,delta2,gamma1,gamma2)
 
 # re-shape/melt the data.table for the purpose of plotting in ggplot2
 mydtmolten<-melt.data.table(data=mydt,id.vars='time')
