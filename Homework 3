@@ -120,13 +120,12 @@ stockhistory
 #Calculating payoffs for each replicated stockprice S_t                                                                                               
 #CallMC: Monte Carlo value of the call option using payoff                                                                                              
 #Simulation2: 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
-#Plotting simulated paths using ggplot                                                                                              
+#Plotting simulated paths using ggplot
+#
 #################################################
 #corresponding Rcode next
-
 logreturns <- diff(log(stockhistory))
 volatility <- sd(logreturns)/sqrt(1/252) 
-volatility
 bsprice <- bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0)
 greeks1 <- greeks(bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0))
 delta <- round(greeks1[2], digits = 4)
@@ -141,9 +140,9 @@ gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep))
 gg <- gg+geom_line()
 print(gg)
 
-rep4<-simulation2[simulation2$rep == 4,]
-length(rep4)
-tail(rep4, n=3)
+rep6<-simulation2[simulation2$rep == 6,]
+length(rep6)
+tail(rep6, n=3)
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
