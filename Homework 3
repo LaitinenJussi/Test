@@ -79,15 +79,15 @@ myST<-function(S0,mu,sigma,T,R)
 #comment box related to the declaration of input variables
 #################################################
 #TCKR: is the ticker for Microsoft stock 
-#Stockprice, optionprice and strikeprice: manually
+#Stockprice, optionprice and strikeprice: [num] manually
 #taken from option-quote data file 
-# TTE: Time to exipiry [num] calculated april-february                                                                                               
-#riskfreerate: 3 month-maturity T-Bill converted to decimals                                                                                                
-#R1 & R2: Amount of replicates in Monte Carlo                                                                                            
-#today & oneyearago: Dates for one year interval  
-#prices [data frame]: Data file with stock data
-#Stockhistory: Subset of prices including 
-# One year historic data for MSFT stock                                                                                              
+# TTE: [num] Time to exipiry calculated april-february                                                                                               
+#riskfreerate: [num] 3 month-maturity T-Bill converted to decimals                                                                                                
+#R1 & R2: [int] Amount of replicates in Monte Carlo                                                                                            
+#today & oneyearago: [int] Dates for one year interval  
+#prices: data.frame including historic stock data
+#Stockhistory: data.frame is a subset of prices including 
+#one year historic data for MSFT stock                                                                                              
 #################################################
 #corresponding Rcode next
 library('derivmkts')
@@ -111,7 +111,7 @@ stockhistory
 #################################################
 #logreturns: logaritmic returns of stockhistory
 #volatility: Volatility calculated using the logreturns
-#bsprica: Value of the call-option using bscall-function                                                                                             
+#bsprice Value of the call-option using bscall-function                                                                                             
 #Calculating delta and gamma using greeks-function                                                                                                
 #Rounding delta and gamma to 4 digits                                                                                              
 #Calculate the implied volatility using bsimpvol-function                                                                                               
@@ -149,11 +149,11 @@ print(gg)
 #you had to modify to implement put-based strategy
 #################################################
 # Modified ticker and date according to assignment
-# Modified the calculation of option value from call                                                                                              
-# to put.                                                                                               
-# Modified payouts from call payouts to put payouts                                                                                               
+# Modified the calculation of option values from                                                                                              
+# calls to puts in accordance to assignment.
+# Modified payoffs from call payouts to put payouts                                                                                               
 # Modified initial cashflows to get correct profits                                                                                                
-# Modified Greeks to be calculated from puts           
+# Modified Greeks input to be greeks from puts           
 #                                                                                               
 #                                                                                               
 #                                                                                               
