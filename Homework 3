@@ -78,16 +78,16 @@ myST<-function(S0,mu,sigma,T,R)
 
 #comment box related to the declaration of input variables
 #################################################
-#Stockprice, optionprice and strikeprice taken
-#from option quote data-file. TTE (Time to exipiry)                                                                                                
-#calculated april-february/12 and rounded to 2 digits.                                                                                               
-#Riskfree intrest rate is assigned as today's value for                                                                                                
-#3 month-maturity T-Bill rate in:                                                                                              
-#DailyTreasuryYieldCurveRates.txt                                                                                                
-#R1 & R2 are  amount of replicates in Monte Carlo                                                                                            
-#Stockhistory for the underlying stock to European MSFT                                                                                              
-#loaded and taken from STtockPrices. Estimated volatility 
-# calculated from assigned 1 year subset of Stockhistory
+#TCKR: is the ticker for Microsoft stock 
+#Stockprice, optionprice and strikeprice: manually
+#taken from option-quote data file 
+# TTE: Time to exipiry [num] calculated april-february                                                                                               
+#riskfreerate: 3 month-maturity T-Bill converted to decimals                                                                                                
+#R1 & R2: Amount of replicates in Monte Carlo                                                                                            
+#today & oneyearago: Dates for one year interval  
+#prices [data frame]: Data file with stock data
+#Stockhistory: Subset of prices including 
+# One year historic data for MSFT stock                                                                                              
 #################################################
 #corresponding Rcode next
 library('derivmkts')
@@ -107,25 +107,26 @@ prices <-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical fi
 tail(prices)
 stockhistory <- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
 stockhistory
-volatility<- sd(stockhistory)*0.01
-logreturns <- diff(log(stockhistory))
-volatility <- sd(logreturns)/sqrt(1/252) 
-volatility
 #comment box related to the remaining tasks
 #################################################
-#First calculate the value of the call-option using Black-Scholes                                                                                             
-#Calculating delta and gamma using greeks-function in derivmkts                                                                                               
+#logreturns: logaritmic returns of stockhistory
+#volatility: Volatility calculated using the logreturns
+#bsprica: Value of the call-option using bscall-function                                                                                             
+#Calculating delta and gamma using greeks-function                                                                                                
 #Rounding delta and gamma to 4 digits                                                                                              
-#Calculate the implied volatility using Black-Scholes                                                                                               
+#Calculate the implied volatility using bsimpvol-function                                                                                               
 #Set seed to control the randomness                                                                                               
-#Simulating S_t for 10000 replicates using myST-function                                                                                               
+#Simluation2: 10000 replicates for S_t using myST-function                                                                                               
 #Calculating payoffs for each replicated stockprice S_t                                                                                               
-#Calculating the Monte Carlo value of the call option                                                                                              
-#Simulating 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
+#CallMC: Monte Carlo value of the call option using payoff                                                                                              
+#Simulation2: 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
 #Plotting simulated paths using ggplot                                                                                              
 #################################################
 #corresponding Rcode next
 
+logreturns <- diff(log(stockhistory))
+volatility <- sd(logreturns)/sqrt(1/252) 
+volatility
 bsprice <- bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0)
 greeks1 <- greeks(bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0))
 delta <- round(greeks1[2], digits = 4)
@@ -143,21 +144,7 @@ print(gg)
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
 
-#comment box to say which parts of BullSpreadCallDeltaGamma.R
-#you had to modify to implement put-based strategy
-#################################################
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#                                                                                               
-#################################################
-#corresponding Rcode (with in-line comments) next
+
 #comment box to say which parts of BullSpreadCallDeltaGamma.R
 #you had to modify to implement put-based strategy
 #################################################
