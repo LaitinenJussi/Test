@@ -98,7 +98,7 @@ optionprice <- 17.86
 strikeprice <- 230.00
 TTE <- round((4-2)/12, digits = 2)
 riskfreerate <- 0.04*0.01                  
-deltat <- 0.01
+deltat <- 0.001
 R1 <- 10000
 R2 <- 10 
 today <- 20210203
