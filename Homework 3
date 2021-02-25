@@ -105,8 +105,10 @@ today <- 20210203
 oneyearago <- today-10000
 prices <-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
 tail(prices)
+
 stockhistory <- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
 stockhistory
+
 #comment box related to the remaining tasks
 #################################################
 #logreturns: logaritmic returns of stockhistory
@@ -126,15 +128,22 @@ stockhistory
 #corresponding Rcode next
 logreturns <- diff(log(stockhistory))
 volatility <- sd(logreturns)/sqrt(1/252) 
+
 bsprice <- bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0)
+
 greeks1 <- greeks(bscall(stockprice, strikeprice, volatility , riskfreerate, TTE, 0))
 delta <- round(greeks1[2], digits = 4)
 gamma <- round(greeks1[3], digits = 4)
+
 impvol <- bscallimpvol(stockprice, strikeprice, riskfreerate, TTE, 0, optionprice)
+
 set.seed(11705)
+
 simulation1 <- myST(stockprice, riskfreerate, volatility, TTE, R1)
 payoff <- ifelse(test=simulation1-strikeprice >0, yes=simulation1-strikeprice, no=0)
+
 callMC <- exp(-riskfreerate*(TTE-0))*mean(payoff)
+
 simulation2 <- myGeometricBrownianMotion(stockprice, riskfreerate, volatility, TTE, deltat, R2)
 gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep)) 
 gg <- gg+geom_line()
@@ -143,6 +152,7 @@ print(gg)
 rep6<-simulation2[simulation2$rep == 6,]
 length(rep6)
 tail(rep6, n=3)
+
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
 #################################################Code for Exercise 3
