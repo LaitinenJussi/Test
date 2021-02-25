@@ -110,11 +110,11 @@ stockhistory
 #comment box related to the remaining tasks
 #################################################
 #logreturns: logaritmic returns of stockhistory
-#volatility: Volatility calculated using the logreturns
-#bsprice Value of the call-option using bscall-function                                                                                             
-#Calculating delta and gamma using greeks-function                                                                                                
+#volatility: Estimated volatility calculated using the logreturns
+#bsprice: Estimated value of the call-option using bscall-function                                                                                             
+#Estimated delta and gamma using greeks-function                                                                                                
 #Rounding delta and gamma to 4 digits                                                                                              
-#Calculate the implied volatility using bsimpvol-function                                                                                               
+#Estimated implied volatility using bsimpvol-function                                                                                               
 #Set seed to control the randomness                                                                                               
 #Simluation2: 10000 replicates for S_t using myST-function                                                                                               
 #Calculating payoffs for each replicated stockprice S_t                                                                                               
