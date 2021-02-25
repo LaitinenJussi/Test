@@ -141,7 +141,7 @@ gg <- ggplot(data=simulation2,aes(x=time,y=value,col=rep))
 gg <- gg+geom_line()
 print(gg)
 
-rep4<-simulation2[simulation2$value & simulation2$rep == 4, c(2)]
+rep4<-simulation2[simulation2$rep == 4,]
 length(rep4)
 tail(rep4, n=3)
 #################################################Code for Exercise 3
