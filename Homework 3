@@ -78,16 +78,16 @@ myST<-function(S0,mu,sigma,T,R)
 
 #comment box related to the declaration of input variables
 #################################################
-#TCKR: is the ticker for Microsoft stock 
-#Stockprice, optionprice and strikeprice: [num] manually
-#taken from option-quote data file 
+# TCKR: the ticker for the stock, here Microsoft (MSFT) 
+# Stock price (S0), option price (c) & strike price (K): 
+# [num] manually taken from option-quote data file
 # TTE: [num] Time to exipiry calculated april-february                                                                                               
-#riskfreerate: [num] 3 month-maturity T-Bill converted to decimals                                                                                                
-#R1 & R2: [int] Amount of replicates in Monte Carlo                                                                                            
-#today & oneyearago: [int] Dates for one year interval  
-#prices: data.frame including historic stock data
-#Stockhistory: data.frame is a subset of prices including 
-#one year historic data for MSFT stock                                                                                              
+# rf: [num] 3 month-maturity T-Bill converted to decimals                                                                                                
+# R1 & R2: [int] Amount of replicates in Monte Carlo                                                                                            
+# today & oneyearago: [int] Dates for one year interval  
+# mystockdata: data.frame including historic stock data
+# stockhistory: data.frame is a subset of mystockdata 
+# including the one year historic data for MSFT stock                                                                                              
 #################################################
 #corresponding Rcode next
 library('derivmkts')
@@ -108,24 +108,23 @@ stockhistory<- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, 
 
 #comment box related to the remaining tasks
 #################################################
-#logreturns: Logaritmic returns of stockhistory
-#vol: Estimated volatility calculated using the logreturns
-#bsprice: Estimated value of the call-option using bscall-function                                                                                             
-#Estimated delta and gamma using greeks-function                                                                                                
-#Rounding delta and gamma to 4 digits                                                                                              
-#Estimated implied volatility using bsimpvol-function                                                                                               
-#Set seed to control the randomness                                                                                               
-#sim1: 10000 replicates for S_t using myST-function                                                                                               
-#Calculating payoffs for each replicated stockprice S_t                                                                                               
-#callMC: Monte Carlo value of the call option using payoff                                                                                              
-#sim2: 10 paths of S_t using myGeometricBrownianMotion-function                                                                                               
-#Plotting simulated paths using ggplot.
-#By subsetting path 6 from sim2, the length of the
-#vector and the last three values of S_6 are returned.
+# Estimate volatility (vol) using  log-returns.
+# First, estimating the value of the call-option
+# (bsprice) using the bscall-function. Next calculate,
+# delta & gamma: Estimated using greeks-function, and                                                                                                                                                                                    
+# impvol: Estimated using bsimpvol-function.                                                                                             
+# Set seed to control the randomness. Run two simulations;
+# sim1: 10000 replicates for S_t using myST()                                                                                            
+# Calculating payoffs (payoff) for each replicated stockprice S_t,                                                                                             
+# callMC: Monte Carlo value of the call option using payoff from sim1  .                                                                                           
+# sim2: 10 paths of S_t using myGeometricBrownianMotion()                                                                                            
+# Plotting simulated paths (sim2) using ggplot.
+# After subsetting path 6 from sim2, the length of the vector &
+# the last three values of the sixth path of S_t are returned.
 #################################################
 #corresponding Rcode next
-logreturns <- diff(log(stockhistory))
-vol <- sd(logreturns)/sqrt(1/252) 
+
+vol <- sd(diff(log(stockhistory)))/sqrt(1/252) 
 
 bsprice<- bscall(S0, K, vol , rf, TTE, 0)
 
@@ -133,14 +132,14 @@ greeks1<- greeks(bscall(S0, K, vol , rf, TTE, 0))
 delta<- round(greeks1[2], digits = 4)
 gamma<- round(greeks1[3], digits = 4)
 impvol<- bscallimpvol(S0, K, rf, TTE, 0, c)
-round(impvol,4)
+round(impvol, 4)
 
 set.seed(11705)
 
 sim1<- myST(S0, rf, vol, TTE, R1)
 payoff<- ifelse(test=sim1-K >0, yes=sim1-K, no=0)
 callMC<- exp(-rf*(TTE-0))*mean(payoff)
-round(callMC,4)
+round(callMC, 4)
 
 sim2<- myGeometricBrownianMotion(S0,rf,vol,TTE,deltat,R2)
 gg<- ggplot(data=sim2,aes(x=time,y=value,col=rep)) 
@@ -159,13 +158,13 @@ tail(rep6, n=3)
 #comment box to say which parts of BullSpreadCallDeltaGamma.R
 #you had to modify to implement put-based strategy
 #################################################
-# Modified ticker and date according to assignment
-# Modified the calculation of option values from                                                                                              
-# calls to puts in accordance to assignment.
-# Modified payoffs from call payouts to put payouts                                                                                               
-# Modified initial cashflows to get correct profits                                                                                                
-# Modified Greeks input to be greeks from puts           
-# Change c1 and c2 to p1 and p2                                                                                              
+# 1. Modified ticker and date according to assignment
+# 2. Modified the calculation of option values from                                                                                              
+# 3. calls to puts in accordance to assignment.
+# 4. Modified payoffs from call payouts to put payouts                                                                                               
+# 5. Modified initial cashflows to get correct profits                                                                                                
+# 6. Modified Greeks input to be greeks from puts           
+# 7. Change variable names 'c1' & 'c2' to 'p1' & 'p2'                                                                                              
 #                                                                                               
 #                                                                                               
 #                                                                                               
@@ -173,7 +172,6 @@ tail(rep6, n=3)
 #################################################
 #corresponding Rcode (with in-line comments) next
 rm(list=ls()) # clear the workspace
-
 
 # load the necessary Rpackages 
 library('quantmod') #data download
@@ -222,7 +220,6 @@ myratedata<-getSymbols(Symbols=mysymbol,src='FRED',auto.assign = FALSE)
 RFREE<-myratedata[time(myratedata)==mystart][[1]]*0.01 
 RFREE
 
-
 # extract/declare/calculate relevant variables 
 # for the implementation of the strategy:
 # K1 = the strike price of the short put
@@ -240,7 +237,6 @@ p1<-round(p1,4)
 p2<-bsput(s=S, k=K2, v=SIGMA, r=RFREE, tt = TTE, d = 0) #Change bscall to bsput. This is the value of the long put
 p2<-round(p2,4)
 
-
 # calculate the payoffs (round all to 4 decimals): 
 # payoff1 = the payoff from the long put with strike K1
 # payoff2 = the payoff from the short put with strike K2
@@ -248,7 +244,6 @@ p2<-round(p2,4)
 payoff1<- ifelse(test=S-K1<0,yes= K1-S,no=0);payoff1<-round(x=payoff1,digits=4)    #Change payoff to put payoffs
 payoff2<- ifelse(test=S-K2<0,yes=-(K2-S),no=0);payoff2<-round(x=payoff2,digits=4)  #Change payoff to put payoffs
 payoff<- payoff1+payoff2;payoff<-round(x=payoff,digits=4)
-
 
 # calculate the profit (profit=the total payoff minus the initial investment); 
 # negative profit = loss
