@@ -123,7 +123,7 @@ stockhistory<- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, 
 #################################################
 #corresponding Rcode next
 
-vol <- sd(diff(log(stockhistory)))/sqrt(1/252) 
+vol<- round(sd(logreturns)/sqrt(1/252),4)
 
 bsprice<- bscall(S0, K, vol , rf, TTE, 0)
 
