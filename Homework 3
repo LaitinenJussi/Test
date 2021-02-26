@@ -13,10 +13,9 @@ rm(list=ls())
 
 #Group nr: 5
 #Members:
-#Alina-Emelie Andersson
 #Jussi Laitinen
 #Oskar Lindman
-#...
+#Alina-Emelie Andersson
 #Member whose quiz variant is used for coding:
 #Jussi Laitinen
 
@@ -140,6 +139,8 @@ sim1<- myST(S0, rf, vol, TTE, R1)
 payoff<- ifelse(test=sim1-K >0, yes=sim1-K, no=0)
 callMC<- exp(-rf*(TTE-0))*mean(payoff)
 round(callMC, 4)
+
+set.seed(11705)
 
 sim2<- myGeometricBrownianMotion(S0,rf,vol,TTE,deltat,R2)
 gg<- ggplot(data=sim2,aes(x=time,y=value,col=rep)) 
