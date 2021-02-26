@@ -85,7 +85,7 @@ myST<-function(S0,mu,sigma,T,R)
 # rf: [num] 3 month-maturity T-Bill converted to decimals                                                                                                
 # R1 & R2: [int] Amount of replicates in Monte Carlo                                                                                            
 # today & oneyearago: [int] Dates for one year interval  
-# mystockdata: data.frame including historic stock data
+# prices: data.frame including historic stock data
 # stockhistory: data.frame is a subset of mystockdata 
 # including the one year historic data for MSFT stock                                                                                              
 #################################################
@@ -103,7 +103,7 @@ R1<- 10000; R2<- 10
 today<- 20210203
 oneyearago<- today-10000
 
-mystockdata<-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
+prices<-read.table(file='C:/Users/jussi/Desktop/Introduction to Mathematical finance/StockPrices.txt', header=TRUE)
 stockhistory<- prices[prices$yyyymmdd >= oneyearago & prices$yyyymmdd <= today, TCKR]
 
 #comment box related to the remaining tasks
