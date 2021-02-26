@@ -146,7 +146,7 @@ gg<- ggplot(data=sim2,aes(x=time,y=value,col=rep))
 gg<- gg+geom_line()
 print(gg)
 
-rep6<-sim2[simu2$rep == 6, 2]
+rep6<-sim2[sim2$rep == 6, 2]
 length(rep6)
 tail(rep6, n=3)
 
