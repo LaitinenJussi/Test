@@ -14,7 +14,7 @@ rm(list=ls())
 Group nr: 5
 #Members:
 # Alina-Emelie Andersson 
-# Oskar LIndman
+# Oskar Lindman
 # Jussi Laitinen
 #...
 #Member whose quiz variant is used for coding:
@@ -57,28 +57,21 @@ bondprice(yields,maturities)
 
 #comment box related to function 2
 #################################################
-# a function which will compute forward rates from the 
-# yields for several maturities; the function should have 
-# two arguments, YY (numeric vector of yields [in unit-less 
-# format, annualized]) and MM (numeric vector of corresponding 
-# maturities [in years]); the function should return a numeric 
-#vector containing forward rates; all three vectors should have 
-# the same (arbitrary) length
-#
-#
-#
-#
-#
-#
-#
-#
-#
+# The function, forwardfun, computes the forward
+# rates for the given yields and  maturities.
+# 
+# The following arguments should be given:
+# YY [num] vector of yields, unit-less, annualized
+# MM [num] vector maturities, in years
 #################################################
 #corresponding Rcode next
-forwardrate <- Function(YY, MM)
+forwardfun <- function(YY, MM) 
 {
-  
+  values <- c(YY[1], YY[-1]+MM[-length(MM)]*diff(YY)/diff(MM))
+  return(values)        
 }
+
+forwardfun(YY=yields, MM=maturities)
 
 
 #comment box related to the remaining tasks 
