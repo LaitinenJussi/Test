@@ -1,0 +1,106 @@
+RNGkind(sample.kind = 'Rejection')
+rm(list=ls())
+#This space is reserved for the teacher:
+#Ex1: NA
+#Ex2 (3pts): 
+#Ex3: NA 
+#Feedback:
+#
+#
+#
+#################################################
+#Rscript for HW4
+
+#Group nr: ...
+#Members:
+#...
+#...
+#...
+#...
+#Member whose quiz variant is used for coding:
+#...
+
+#Annotations guidelines:
+#Ex1: no Rcode
+#Ex2: use three comment boxes; do NOT use in-line comments (see below for details)
+#Ex3: no Rcode
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+#################################################Code for Exercise 2
+
+#comment box related to function 1
+#################################################
+#a function which will compute zero-coupon bond prices 
+#from the yields for several maturities; the function 
+#should have two arguments, YY (numeric vector of yields 
+#[in unit-less format, annualized]) and MM (numeric vector 
+#of corresponding maturities [in years]); the function should 
+#return a numeric vector containing bond prices; all three vectors 
+#should have the same (arbitrary) length
+#
+#
+#
+#
+#
+#
+#
+#################################################
+bondprice <- function(YY, MM)
+{
+  temp <- NULL
+  result <- NULL
+  R <- length(YY)
+  for(i in 1:R)
+   {
+    temp <- 1/((0.01*YY[i])+1)^MM[i]
+    result[i] <- temp
+   }
+  return(result)
+}
+maturities <- c(0.5, 1, 1.5)
+yields <- c(2,2,2)
+
+bondprice(yields,maturities)
+
+#comment box related to function 2
+#################################################
+# a function which will compute forward rates from the 
+# yields for several maturities; the function should have 
+# two arguments, YY (numeric vector of yields [in unit-less 
+# format, annualized]) and MM (numeric vector of corresponding 
+# maturities [in years]); the function should return a numeric 
+#vector containing forward rates; all three vectors should have 
+# the same (arbitrary) length
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#################################################
+#corresponding Rcode next
+forwardrate <- Function(YY, MM)
+{
+  
+}
+
+
+#comment box related to the remaining tasks 
+#(data load, parts a), b), c), etc)
+#################################################
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#################################################
+#corresponding Rcode next
+
