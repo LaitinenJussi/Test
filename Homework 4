@@ -11,14 +11,14 @@ rm(list=ls())
 #################################################
 #Rscript for HW4
 
-#Group nr: ...
+Group nr: 5
 #Members:
-#...
-#...
-#...
+# Alina-Emelie Andersson 
+# Oskar LIndman
+# Jussi Laitinen
 #...
 #Member whose quiz variant is used for coding:
-#...
+# Oskar LIndman
 
 #Annotations guidelines:
 #Ex1: no Rcode
@@ -30,15 +30,9 @@ rm(list=ls())
 
 #comment box related to function 1
 #################################################
-#a function which will compute zero-coupon bond prices 
-#from the yields for several maturities; the function 
-#should have two arguments, YY (numeric vector of yields 
-#[in unit-less format, annualized]) and MM (numeric vector 
-#of corresponding maturities [in years]); the function should 
-#return a numeric vector containing bond prices; all three vectors 
-#should have the same (arbitrary) length
-#
-#
+# Function calculates bond prices for zero coupon
+# bonds from the YY vector of annualizes yields
+# and the MM vector of maturities in years
 #
 #
 #
@@ -59,7 +53,6 @@ bondprice <- function(YY, MM)
 }
 maturities <- c(0.5, 1, 1.5)
 yields <- c(2,2,2)
-
 bondprice(yields,maturities)
 
 #comment box related to function 2
