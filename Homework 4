@@ -66,10 +66,14 @@ bondprice(yields,maturities)
 #################################################
 #corresponding Rcode next
 forwardfun <- function(YY, MM) 
-{
-  values <- c(YY[1], YY[-1]+MM[-length(MM)]*diff(YY)/diff(MM))
-  return(values)        
-}
+  {
+  if(length(YY)==length(MM))
+    {
+    values <- c(YY[1], YY[-1]+MM[-length(MM)]*diff(YY)/diff(MM))
+    return(values)
+    }
+  return("The arbitrary length of the input vectors differ")
+  }
 
 forwardfun(YY=yields, MM=maturities)
 
