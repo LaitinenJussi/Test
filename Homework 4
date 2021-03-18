@@ -11,7 +11,7 @@ rm(list=ls())
 #################################################
 #Rscript for HW4
 
-Group nr: 5
+#Group nr: 5
 #Members:
 # Alina-Emelie Andersson 
 # Oskar Lindman
