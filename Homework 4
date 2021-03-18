@@ -1,5 +1,6 @@
 RNGkind(sample.kind = 'Rejection')
 rm(list=ls())
+library('data.table')
 #This space is reserved for the teacher:
 #Ex1: NA
 #Ex2 (3pts): 
@@ -31,18 +32,14 @@ rm(list=ls())
 #comment box related to function 1
 #################################################
 # Function calculates bond prices for zero coupon
-# bonds from the YY vector of annualizes yields
-# and the MM vector of maturities in years
-#
-#
-#
-#
-#
+# bonds for thegiven yields and maturities.
+# 
+# The following arguments should be given:
+# YY [num] vector of yields, unit-less, annualized
+# MM [num] vector maturities, in years
 #################################################
 bondprice <- function(YY, MM)
 {
-  if(length(YY)==length(MM))
-    {
     temp <- NULL
     result <- NULL
     R <- length(YY)
@@ -52,7 +49,6 @@ bondprice <- function(YY, MM)
         result[i] <- temp
       }
     return(result)
-   }
 }
 maturities <- c(0.5, 1, 1.5)
 yields <- c(2,2,2)
