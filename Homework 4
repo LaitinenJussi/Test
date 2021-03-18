@@ -108,15 +108,14 @@ round(apply(X=D,MARGIN = 2,FUN = 'mean'),4)
 round(apply(X=D,MARGIN = 2,FUN = 'min'),4)
 round(apply(X=D,MARGIN = 2,FUN = 'max'),4)
 
-Bondprices<-apply(X=D,MARGIN = 2,FUN = 'bondprice', MM=c(c(1,2,3,6)/12,1:3,5,7,10,20,30))
+Bondprices<-apply(X=D,MARGIN = 1,FUN = 'bondprice', MM=c(c(1,2,3,6)/12,1:3,5,7,10,20,30))
 Bondprices<-t(Bondprices)
-Bondprices<-Bondprices[,c(1:12)]
-Bondprices<-t(Bondprices)
-round((Bondprices),4)
+Bondprices<-round((Bondprices),4)
+Bondprices
+first(Bondprices)
 
-Forwardrates<-apply(X=D,MARGIN = 2,FUN = 'forwardfun', MM=c(c(1,2,3,6)/12,1:3,5,7,10,20,30))
+Forwardrates<-apply(X=D,MARGIN = 1,FUN = 'forwardfun', MM=c(c(1,2,3,6)/12,1:3,5,7,10,20,30))
 Forwardrates<-t(Forwardrates)
-Forwardrates<-Forwardrates[,c(1:12)]
-Forwardrates<-t(Forwardrates)
-round((Forwardrates),4)
-
+Forwardrates<-round((Forwardrates),4)
+Forwardrates
+last(Forwardrates)
