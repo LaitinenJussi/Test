@@ -41,15 +41,18 @@ Group nr: 5
 #################################################
 bondprice <- function(YY, MM)
 {
-  temp <- NULL
-  result <- NULL
-  R <- length(YY)
-  for(i in 1:R)
-   {
-    temp <- 1/((0.01*YY[i])+1)^MM[i]
-    result[i] <- temp
+  if(length(YY)==length(MM))
+    {
+    temp <- NULL
+    result <- NULL
+    R <- length(YY)
+    for(i in 1:R)
+      {
+        temp <- 1/((0.01*YY[i])+1)^MM[i]
+        result[i] <- temp
+      }
+    return(result)
    }
-  return(result)
 }
 maturities <- c(0.5, 1, 1.5)
 yields <- c(2,2,2)
