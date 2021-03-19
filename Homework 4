@@ -31,8 +31,9 @@ library('data.table')
 
 #comment box related to function 1
 #################################################
-# Function calculates bond prices for zero coupon
-# bonds for thegiven yields and maturities.
+# The function, bondprices, calculates the prices
+# for zero coupon bonds for given yields and matu-
+# rities using continuous compounding.
 # 
 # The following arguments should be given:
 # YY [num] vector of yields, unit-less, annualized
