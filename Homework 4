@@ -31,7 +31,7 @@ library('data.table')
 
 #comment box related to function 1
 #################################################
-# The function, bondprices, calculates the prices
+# The function, "bondprices", calculates the prices
 # for zero coupon bonds for given yields and matu-
 # rities using continuous compounding.
 # 
@@ -47,8 +47,12 @@ Bondprices <- function(YY,MM)
 }
 #comment box related to function 2
 #################################################
-# The function, forwardfun, computes the forward
+# The function, "forwardfun", computes the forward
 # rates for the given yields and  maturities.
+# The first 1MO yield, YY[1], is placed in the 
+# first slot of the values-vector. The remaining 
+# forward rates are calculated as instantaneous 
+# forward rates (R_F).
 # 
 # The following arguments should be given:
 # YY [num] vector of yields, unit-less, annualized
