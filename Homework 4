@@ -110,3 +110,67 @@ Forwardrates<-t(Forwardrates)
 Forwardrates<-round((Forwardrates),4)
 Forwardrates
 last(Forwardrates)
+
+
+#################################################
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#################################################
+
+#Q3
+
+install.packages("gmm")
+library("gmm")
+
+g6 <- function(theta, x) {
+  t <- length(x)
+  et1 <- diff(x) - theta[1] - theta[2] * x[-t]
+  ht <- et1^2 - theta[3] * x[-t]^(2 * theta[4])
+  g <- cbind(et1, et1 * x[-t], ht, ht * x[-t])
+  return(g)
+}
+
+
+#Consider daily rates for 1.MO maturity (expressed in percentages, annualized)
+Start<- 20181114
+End<- 20200226
+
+daily<-data.table(Yieldsrt[Yieldsrt$yyyymmdd>=Start & Yieldsrt$yyyymmdd<=End,])
+daily<-daily[,c(3)] # daily 1.MO rates
+
+#Using Rfunction gmm of Rpackage gmm, with starting values of the parameters set according to the guidelines of Lab5:
+# Simulate one path of the process for the short rate {r_t} on [0,T] from the Vasicek model
+
+#a) fit the unrestricted model (model specified by equation (2) therein) to the data;
+
+
+rf<-daily$X1.MO
+dr <- diff(rf)
+res_0 <- lm(dr ~ rf[-length(rf)])
+tet0 <- c(res_0$coef, var(residuals(res_0)), 0)
+names(tet0) <- c("alpha", "beta", "sigma^2", "gamma")
+res_rf <- gmm(g6, rf, tet0, control = list(maxit = 1000, reltol = 1e-10))
+round(coef(res_rf), 4)
+
+summary.gmm(res_rf)  #prints out whole summary, including p-values
+
+
+#b) perform J-test to choose between Brenan-Schwartz model (null hypothesis) and the unrestricted model (alternative hypothesis).
+
+#In the restricted model (Brenan-Schwartz), the parameter estimates and their corresponding p-values (in parentheses) are (round all to four decimals):
+
+#For Brenan-Schwartz the restriction is gamma=1
+
+tet0[4]<- 1 
+Brenan_Schwartz <- gmm(g=g6, x=rf, t0=tet0, control = list(maxit = 1000, reltol = 1e-10), eqConst = c(4)) 
+round(coef(Brenan_Schwartz),4)
+summary(Brenan_Schwartz) #p-values and J-test result
+
