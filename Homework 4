@@ -1,5 +1,6 @@
 RNGkind(sample.kind = 'Rejection')
 rm(list=ls())
+library('data.table')
 #This space is reserved for the teacher:
 #Ex1: NA
 #Ex2 (3pts): 
